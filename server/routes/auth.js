@@ -4,11 +4,15 @@ const authController = require('../controllers/authController.js');
 const authMiddleware = require('../middlewares/authMiddleware.js');
 
 
-router.post('/authenticate', authMiddleware.verifyAccessToken, (req, res) => {
+router.post('/authenticate',authMiddleware.verifyEmail, (req, res) => {
    // redirect auth.js to authController.js
-    authController.authenticate(req, res);
+    authController.newUser(req, res);
   });
-  
-  module.exports = router;
+
+router.post('/authenticate/login', authMiddleware.verifyUsernamePassword, (req, res) => {
+   // redirect auth.js to authController.js
+    authController.loginUser(req, res);
+  });
+
 
 module.exports = router;
