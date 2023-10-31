@@ -18,7 +18,7 @@ exports.newUser = (req, res) => {
     })
     .catch((error) => {
       // Handle any errors that occur during user creation
-      res.status(400).json({ message: 'Authentication failed : error creating the user\n\t', error: error.message });
+      res.status(400).json({ message: `Authentication failed : error creating the user > `, error: error.message });
     });
 };
 
@@ -38,10 +38,10 @@ exports.loginUser = (req, res) => {
       .catch((error) => {
         // Handle any errors that occur during user creation
         if(error.message === "User does not have authorization."){
-          res.status(401).json({ message: 'Authentication failed : error logging in user\n\tuseraccount has been disabled', error: error.message });
+          res.status(401).json({ message: 'Authentication failed : error logging in user > useraccount has been disabled', error: error.message });
         }
         else{
-          res.status(400).json({ message: 'Authentication failed : error logging in user\n\t', error: error.message });
+          res.status(400).json({ message: 'Authentication failed : error logging in use > ', error: error.message });
         }
       });
   

@@ -7,8 +7,7 @@ exports.loginUser = (uid) => {
     // get the current time in milliseconds
     const now = new Date();
     const currentTimestamp = now.getTime();
-   // const expiration = 259200000; // 72 hours in milliseconds
-    const expiration = 15000; // 72 hours in milliseconds
+    const expiration = 259200000; // 72 hours in milliseconds
     
     if(!this.getUser(uid).disabled){
       updateSession(uid, currentTimestamp + expiration);
