@@ -4,11 +4,17 @@
 # login
 
 Api-end-point : http://localhost:3000/auth/authenticate/login
-paramters-body : {
+
+paramters-body : 
+
+                 {
                     "username": "email",
                     "password": "password"
                  }
-response : 200 OK -> {
+
+response : 
+
+          200 OK -> {
                         "uid": "uid",
                         "expiration": 259200000,
                         "message": "Authentication successful"
@@ -29,11 +35,19 @@ response : 200 OK -> {
 # signup
 
 Api-end-point : http://localhost:3000/auth/authenticate
-paramters-body : {
+
+
+paramters-body : 
+
+                {
                     "username": "email",
                     "password": "password"
                  }
-response : 200 OK -> {
+
+
+response : 
+
+          200 OK -> {
                         "uid": "uid",
                         "message": "Authentication successful"
                     }
