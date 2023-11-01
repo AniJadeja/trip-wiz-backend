@@ -46,39 +46,26 @@ exports.createUserInDatabase = (uid, username, password) => {
         return Promise.reject(new Error('Invalid uid for user creation'));
     }
 }
+
+
 // Function to update  a new user in the realtime database
-exports.updateUserInDatabase = (uid, displayName, dateOfBirth) => {
-    // Check if uid, displayName, and dateOfBirth are defined
-
-    if (displayName != undefined) {
-        if (dateOfBirth != undefined) {
-
-            // Realtime database user creation starts here
-            // Start writing code below
-            return realtimeDB.ref('users/' + uid).set({
-                displayName: displayName,
-                dateOfBirth: dateOfBirth,
-            })
-                .then(() => {
-                    console.log('manageRealtimeDatabase => updateUserInDatabase : Successfully updated new user in the database');
-                    // You can also set the "username" property here if needed
-                })
-                .catch((error) => {
-                    console.log('manageRealtimeDatabase => updateUserInDatabase : Error updated new user:', error);
-                    throw error; // Throw the error to propagate it
-                });
-        }
-        else {
-            console.log('manageRealtimeDatabase => updateUserInDatabase : dateOfBirth is undefined');
-            return Promise.reject(new Error('Invalid dateOfBirth for user updation'));
-        }
-    }
-    else {
-        console.log('manageRealtimeDatabase => updateUserInDatabase : username is undefined');
-        return Promise.reject(new Error('Invalid displayname for user updation'));
+exports.updateUserInDatabase = (uid, data) => {
+    if (!data) {
+        return Promise.reject(new Error('Invalid data for user update'));
     }
 
+    // Realtime database user update starts here
+    return realtimeDB.ref('users/' + uid).update(data)
+        .then(() => {
+            console.log('manageRealtimeDatabase => updateUserInDatabase: Successfully updated user in the database');
+            return;
+        })
+        .catch((error) => {
+            console.log('manageRealtimeDatabase => updateUserInDatabase: Error updating user:', error);
+            throw error; // Throw the error to propagate it
+        });
 };
+
 
 exports.getUserFromUid = (uid) => {
     return realtimeDB.ref(`users/${uid}`).once('value')
