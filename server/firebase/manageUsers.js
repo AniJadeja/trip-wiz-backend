@@ -8,12 +8,16 @@ exports.loginUser = (uid) => {
     const now = new Date();
     const currentTimestamp = now.getTime();
     const expiration = 259200000; // 72 hours in milliseconds
-    
-    if(!this.getUser(uid).disabled){
+
+    if (!this.getUser(uid).disabled) {
       updateSession(uid, currentTimestamp + expiration);
-      resolve(expiration);
+
+      const expirationDate = new Date(currentTimestamp+expiration);
+      const formattedExpiration = expirationDate.toUTCString();
+
+      resolve(formattedExpiration);
     }
-    else{
+    else {
       reject("ManageUsers => loginUser : User does not have authorization.");
     }
 
@@ -31,7 +35,7 @@ exports.createUser = (username, password) => {
     })
     .catch((error) => {
       console.log('ManageUsers => createUser : Error creating new user:', error);
-      throw error; 
+      throw error;
     });
 };
 
@@ -49,7 +53,7 @@ exports.deleteUser = (uid) => {
 
 exports.getUser = (uid) => {
   console.log("ManageUsers => getUser : uid > " + uid);
-  
+
   return admin.auth().getUser(uid)
     .then((userRecord) => {
       console.log('ManageUsers => getUser : retrieved user');
@@ -69,7 +73,7 @@ exports.updateUser = (uid, data) => {
     })
     .catch((error) => {
       console.log('ManageUsers => updateUser : Error updating user:', error);
-      throw error; 
+      throw error;
     });
 }
 

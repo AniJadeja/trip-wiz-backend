@@ -10,7 +10,14 @@ function updateSession(uid, expiration) {
   try {
     sessions = JSON.parse(fs.readFileSync(sessionFilePath, 'utf8'));
   } catch (error) {
-    // If the file is empty or does not exist, sessions will be an empty object
+    if (error.code === 'ENOENT') {
+      // If the file does not exist, create an empty sessions object
+      sessions = {};
+      fs.writeFileSync(sessionFilePath, JSON.stringify(sessions), 'utf8');
+    } else {
+      // Handle other errors
+      console.error("Error reading session file:", error);
+    }
   }
   sessions[uid] = { expiration };
   fs.writeFileSync(sessionFilePath, JSON.stringify(sessions), 'utf8');
@@ -24,7 +31,14 @@ function deleteSession(uid) {
   try {
     sessions = JSON.parse(fs.readFileSync(sessionFilePath, 'utf8'));
   } catch (error) {
-    // If the file is empty or does not exist, sessions will be an empty object
+    if (error.code === 'ENOENT') {
+      // If the file does not exist, create an empty sessions object
+      sessions = {};
+      fs.writeFileSync(sessionFilePath, JSON.stringify(sessions), 'utf8');
+    } else {
+      // Handle other errors
+      console.error("Error reading session file:", error);
+    }
   }
   if (sessions.hasOwnProperty(uid)) {
     delete sessions[uid];
@@ -58,12 +72,22 @@ function retrieveAllSessionKeys() {
   try {
     sessions = JSON.parse(fs.readFileSync(sessionFilePath, 'utf8'));
   } catch (error) {
-    // If the file is empty or does not exist, sessions will be an empty object
+    if (error.code === 'ENOENT') {
+      // If the file does not exist, create an empty sessions object
+      sessions = {};
+      fs.writeFileSync(sessionFilePath, JSON.stringify(sessions), 'utf8');
+    } else {
+      // Handle other errors
+      console.error("Error reading session file:", error);
+    }
   }
   //const numberOfSessions = Object.keys(sessions).length;
  // console.log("sessionUtils => retrieveAllSessionKeys : all session keys retrieved \n\n", Object.Object.keys(sessions).length, "\n");
  //console.log("sessionUtils => retrieveAllSessionKeys : numberOfSesssions", Object.keys(sessions).length);
   return Object.keys(sessions);
 } 
+
+retrieveAllSessionKeys();
+
 
 module.exports = { updateSession, deleteSession, retrieveSession, retrieveAllSessionKeys };
