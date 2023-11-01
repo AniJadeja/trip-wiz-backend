@@ -10,9 +10,9 @@ exports.updateUserData = (req, res) => {
 
     // console log the data here
 
-    console.log("databaseController => updateUserData : data > ", data);
+    //console.log("databaseController => updateUserData : data > ", data);
 
-    console.log("databaseController => updateUserData : userData > ", userData.data);
+    //console.log("databaseController => updateUserData : userData > ", userData.data);
 
     // verify session
 
