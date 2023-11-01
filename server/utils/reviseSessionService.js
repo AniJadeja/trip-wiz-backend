@@ -12,7 +12,7 @@ function reviseSession() {
     return;
   }
 
-  console.log("reviseSessionService => reviseSession : running sessions\n> ", session)
+  console.log("reviseSessionService => reviseSession : running sessions > ", session.length)
   for(let key in session){
     if(retrieveSession(session[key]) <= Date.now()){
        console.log("reviseSessionService => reviseSession : session expired for uid > ", session[key]);

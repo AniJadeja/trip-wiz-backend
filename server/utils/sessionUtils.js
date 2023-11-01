@@ -87,7 +87,22 @@ function retrieveAllSessionKeys() {
   return Object.keys(sessions);
 } 
 
-retrieveAllSessionKeys();
+function verifySession(uid) {
+  let sessions = {};
+
+  try {
+    sessions = JSON.parse(fs.readFileSync(sessionFilePath, 'utf8'));
+  } catch (error) {
+    // If the file is empty or does not exist, sessions will be an empty object
+  }
+  if (sessions.hasOwnProperty(uid)) {
+    //console.log("sessionUtils => retrieveSession : session retrieved with uid : ", uid);
+    //console.log("\t\t\t\t\t\t\t expiration : ", sessions[uid].expiration);
+    return true;
+  } else {
+    return false;
+  }
+}
 
 
-module.exports = { updateSession, deleteSession, retrieveSession, retrieveAllSessionKeys };
+module.exports = { updateSession, deleteSession, retrieveSession, retrieveAllSessionKeys, verifySession };

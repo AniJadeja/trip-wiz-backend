@@ -14,5 +14,11 @@ router.post('/authenticate/login', authMiddleware.verifyUsernamePassword, (req, 
     authController.loginUser(req, res);
   });
 
+  
+router.post('/authenticate/logout', authMiddleware.verifySession, (req, res) => {
+  // redirect auth.js to authController.js
+   authController.logout(req, res);
+ });
+
 
 module.exports = router;

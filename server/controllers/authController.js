@@ -41,10 +41,28 @@ exports.loginUser = (req, res) => {
           res.status(401).json({ message: 'Authentication failed : error logging in user > useraccount has been disabled', error: error.message });
         }
         else{
-          res.status(400).json({ message: 'Authentication failed : error logging in use > ', error: error.message });
+          res.status(400).json({ message: 'Authentication failed : error logging in user > ', error: error.message });
         }
       });
   
   });
   
 };
+
+exports.logout = (req, res) => {
+   
+  const { uid } = req.body;
+
+
+  manageUsers.logoutUser(uid).then((code) => {
+    if(code === 200){
+      res.status(200).json({ message: 'Logout success' });
+    }
+    else if(code === 401){
+      res.status(401).json({ message: 'Authentication failed : error logging out user > ', error: error.message });
+    }
+  }).catch((error) => { 
+    res.status(400).json({ message: 'Bad Request : Try Again , error ', error: error.message });
+  });
+  
+}

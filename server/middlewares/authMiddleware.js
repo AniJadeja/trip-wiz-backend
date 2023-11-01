@@ -1,6 +1,7 @@
 const e = require("express");
 
 const { getUserFromEmail} = require("../firebase/manageRealtimeDatabase");
+const { verifySession } = require("../utils/sessionUtils");
 
 exports.verifyEmail = (req, res, next) => {
     const { username } = req.body;
@@ -41,4 +42,22 @@ exports.verifyUsernamePassword = (req, res, next) => {
 
     
 
+}
+
+exports.verifySession = (req, res, next) => { 
+    const { uid } = req.body;
+
+    if (uid != undefined) {
+        if (verifySession(uid))
+        {
+          next();
+        }
+        else {
+            res.status(401).json({ message: 'Invalid Session : error parsing the session > no active session found ' });
+        } 
+    }
+        else {
+            res.status(400).json({ message: 'Bad Request : Try Again' });
+        }
+    
 }

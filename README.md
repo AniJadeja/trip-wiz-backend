@@ -16,7 +16,7 @@ response :
 
           200 OK -> {
                         "uid": "uid",
-                        "expiration": 259200000,
+                        "expiration": "expiration date",
                         "message": "Authentication successful"
                     }
           401 Unauthorized -> {
@@ -25,7 +25,6 @@ response :
           401 Unauthorized -> {
                                    "message": "Incorrect Username : error verifying the user identity > username not found or the username contains errornous characters"
                               }
-          // Under Development
           401 Unauthorized -> {
                                    "message": 'Authentication failed : error logging in user > useraccount has been disabled'
                               }
@@ -59,3 +58,26 @@ response :
                                   "message": "Invalid Username : error parsing the email > email cannot contain any special characters other than . (dot)"
                               }
     
+
+# logout
+
+
+Api-end-point : http://localhost:3000/auth/authenticate/logout
+
+paramters-body : 
+
+                 {
+                    "uid": "uid",
+                 }
+
+response : 
+
+          200 OK -> {
+                        "message": "Logout success"
+                    }
+          401 Unauthorized -> {
+                                  "message": "Invalid Session : error parsing the session > no active session found "
+                              }
+          400 Unauthorized -> {
+                                   "message": "Bad Request : Try Again , error "
+                              }

@@ -1,5 +1,5 @@
 const { admin } = require('./firebaseConfig.js');
-const { updateSession } = require('../utils/sessionUtils.js');
+const { updateSession,deleteSession } = require('../utils/sessionUtils.js');
 
 
 exports.loginUser = (uid) => {
@@ -23,6 +23,18 @@ exports.loginUser = (uid) => {
 
   });
 };
+
+exports.logoutUser = (uid) => {
+  return new Promise((resolve, reject) => {
+    if (!this.getUser(uid).disabled) {
+      deleteSession(uid);
+      resolve(200);
+    }
+    else {
+      reject(401);
+    }
+  });
+}
 
 exports.createUser = (username, password) => {
   return admin.auth().createUser({
