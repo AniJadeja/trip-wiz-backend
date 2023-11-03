@@ -1,3 +1,10 @@
 node_modules/
+
 server/firebase/serviceAccountKey.json
 server/utils/session.js
+
+
+server/openAI/testCall.mjs
+server/openAI/response.txt
+server/openAI/instructModelFirst.txt
+server/openAI/GenerateIternarary.js
