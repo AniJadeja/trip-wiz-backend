@@ -1,4 +1,5 @@
 node_modules/
+prompt_results/
 
 server/firebase/serviceAccountKey.json
 server/utils/session.js
