@@ -28,8 +28,16 @@ exports.logoutUser = (uid) => {
   return new Promise((resolve, reject) => {
     if (!this.getUser(uid).disabled) {
       console.log("ManageUsers => logoutUser : uid > " + uid);
-      deleteSession(uid);
-      resolve(200);
+      deleteSession(uid).then((code) => {
+        if (code === 'success') {
+          console.log("ManageUsers => logoutUser : Successfully logged out user");
+          resolve(200);
+        }
+        else if (code === 401) {
+          console.log("ManageUsers => logoutUser : Error logging out user");
+          reject(401);
+        }
+      });
     }
     else {
       reject(401);

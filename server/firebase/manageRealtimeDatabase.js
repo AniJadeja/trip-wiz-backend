@@ -85,9 +85,6 @@ exports.updateUserInDatabase = (uid, data) => {
 
 exports.getAndUpdateUserItinerary = async (uid, itinerary) => {
     return new Promise ((resolve, reject) => {
-        if (!itinerary) {
-            reject(new Error('Invalid data for itinerary update'));
-        }
         // Check if uid, displayName, and dateOfBirth are defined
         realtimeDB.ref('itineraries/' + uid).set(itinerary)
         .then(() => {
@@ -96,28 +93,79 @@ exports.getAndUpdateUserItinerary = async (uid, itinerary) => {
         })
         .catch((error) => {
             console.log('manageRealtimeDatabase => getAndUpdateUserItinerary: Error updating itineray:', error);
-            throw error; // Throw the error to propagate it
+            reject(error); // Throw the error to propagate it
         });
     });
 } 
 
-exports.getAndUpdateSession = async (uid, itinerary) => {
+exports.initiateSession = async (uid, expiration) => {
     return new Promise ((resolve, reject) => {
-        if (!itinerary) {
-            reject(new Error('Invalid data for itinerary update'));
-        }
         // Check if uid, displayName, and dateOfBirth are defined
-        realtimeDB.ref('itineraries/' + uid).update(itinerary)
+        realtimeDB.ref('activeSessions/' + uid).set(expiration)
         .then(() => {
-            console.log('manageRealtimeDatabase => getAndUpdateUserItinerary: Successfully updated itinenraty for '+ uid +' in the database');
+            console.log('manageRealtimeDatabase => initiateSession: Successfully initiated session for '+ uid +' in the database');
            resolve();
         })
         .catch((error) => {
-            console.log('manageRealtimeDatabase => getAndUpdateUserItinerary: Error updating itineray:', error);
-            throw error; // Throw the error to propagate it
+            console.log('manageRealtimeDatabase => initiateSession: Error initiating session:', error);
+            reject(error); // Throw the error to propagate it
         });
     });
 } 
+
+exports.removeSession = async (uid) => {
+    return new Promise ((resolve, reject) => {
+        // Check if uid, displayName, and dateOfBirth are defined
+        realtimeDB.ref('activeSessions/' + uid).remove()
+        .then(() => {
+            console.log('manageRealtimeDatabase => removeSession: Successfully deleted session for '+ uid +' in the database');
+           resolve();
+        })
+        .catch((error) => {
+            console.log('manageRealtimeDatabase => removeSession: Error deleting session:', error);
+            reject(error); // Throw the error to propagate it
+        });
+    });
+} 
+
+exports.verifySession = async (uid) => {
+    return new Promise ((resolve, reject) => {
+       
+        // Check if uid, displayName, and dateOfBirth are defined
+        console.log("manageRealtimeDatabase => verifySession: verifying session for "+ uid);
+        realtimeDB.ref('activeSessions/' + uid).once('value')
+        .then((snapshot) => {
+            if (snapshot.exists()) {
+                //console.log('manageRealtimeDatabase => verifySession: Session exists for '+ uid +' in the database');
+                //console.log('manageRealtimeDatabase => verifySession: Session expiration is '+ snapshot.val());
+              resolve(snapshot);
+            } else {
+                console.log('manageRealtimeDatabase => verifySession: Session does not exist for '+ uid +' in the database');
+              resolve(null);
+            }
+          })
+          .catch((error) => {
+            console.log('manageRealtimeDatabase => verifySession: Error verifying session:', error);
+            reject(error);
+          });
+    });
+} 
+
+
+
+exports.getAllSessionKeys = async () => {
+    return new Promise ((resolve, reject) => {
+        // Check if uid, displayName, and dateOfBirth are defined
+        realtimeDB.ref('activeSessions/').on('value', (snapshot) => {
+            resolve(snapshot.val());
+          }, (errorObject) => {
+            console.log('The read failed: ' + errorObject.name);
+            reject(errorObject.message)
+          }); 
+    });
+} 
+
+
 
 
 exports.getUserFromUid = (uid) => {

@@ -1,16 +1,16 @@
-const { User }  = require("../models/userModel.js");
-const { isValidDate }  = require("../utils/dateValiator.js");
+const { User } = require("../models/userModel.js");
+const { isValidDate } = require("../utils/dateValiator.js");
 
 const { getUserFromEmail } = require("../firebase/manageRealtimeDatabase");
-const { verifySession } = require("../session/sessionUtils");
+const { retrieveSession } = require("../session/sessionUtils");
 
 exports.verifySignUpCreds = (req, res, next) => {
   const { username } = req.body;
   const { password } = req.body;
 
   let userData = new User({
-    username:username, 
-    displayName: req.body.displayName, 
+    username: username,
+    displayName: req.body.displayName,
     dateOfBirth: req.body.dateOfBirth
   });
 
@@ -19,20 +19,20 @@ exports.verifySignUpCreds = (req, res, next) => {
 
   if (username !== undefined && username !== "") {
     if (password !== undefined && password !== "") {
-      if(userData.displayName !== undefined && userData.displayName !== ""){
+      if (userData.displayName !== undefined && userData.displayName !== "") {
 
-        if(userData.dateOfBirth !== undefined && userData.dateOfBirth !== "" && isValidDate(userData.dateOfBirth,true) ){
+        if (userData.dateOfBirth !== undefined && userData.dateOfBirth !== "" && isValidDate(userData.dateOfBirth, true)) {
           if (username.match(/^[a-zA-Z0-9.]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,4}$/)) {
-             next();
+            next();
           }
           else {
             res.status(401).json({ message: 'Invalid Username : error parsing the email > email cannot contain any special characters other than . (dot)' });
           }
         }
-        else{
+        else {
           res.status(401).json({ message: 'Invalid Date of Birth : error parsing the date of birth > date of birth is either empty or not valid (dd/mm/yyyy)' });
         }
-      }else{
+      } else {
         res.status(401).json({ message: 'Invalid Display Name : error parsing the display name > display name cannot be empty' });
       }
     }
@@ -76,17 +76,17 @@ exports.verifySession = (req, res, next) => {
 
   if (uid !== undefined && uid !== "") {
     console.log('authMiddleWare : uid is not null');
-    if (verifySession(uid)) {
-      console.log('authMiddleWare : session is valid');
-      next();
 
-    }
-    else {
-      res.status(401).json({ message: 'Invalid Session : active session not found ' });
-    }
-  }
-  else {
-    res.status(400).json({ message: 'Bad Request : Try Again' });
-  }
+    retrieveSession(uid).then((sessionExists) => {
+      if (sessionExists) {
+        console.log('authMiddleWare : session is valid');
+        next();
+      } else {
+        res.status(401).json({ message: 'Invalid Session : user is not logged in ' });
+      }
+    }).catch((error) => {
+      res.status(401).json({ message: 'Invalid Session : user is not logged in ' });
+    });
 
+  }
 }

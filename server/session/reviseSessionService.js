@@ -1,24 +1,29 @@
-const { retrieveSession,deleteSession, retrieveAllSessionKeys } = require('./sessionUtils.js');
+const {removeSession, verifySession, getAllSessionKeys} = require('../firebase/manageRealtimeDatabase');
 
 let intervalId; 
 
 function reviseSession() {
   // The functionality of reviseSession will be provided later.
-  let session = {};
-  session = retrieveAllSessionKeys();
   //console.log("reviseSessionService => reviseSession : session > ", session);
-  if(session.length == 0 ){
-    console.log("reviseSessionService => reviseSession : no running session found");
-    return;
-  }
+   getAllSessionKeys().then((sessions) => {
+    let sessionKeys ;
+    try {
+      sessionKeys = Object.keys(sessions);
+    } catch (error) {
+      console.log("reviseSessionService => reviseSession : no running session found");
+      return;
+    }
 
-  console.log("reviseSessionService => reviseSession : running sessions > ", session.length)
-  for(let key in session){
-    if(retrieveSession(session[key]) <= Date.now()){
-       console.log("reviseSessionService => reviseSession : session expired for uid > ", session[key]);
-       deleteSession(session[key]);
-     }
+  console.log("reviseSessionService => reviseSession : running sessions > ", sessionKeys.length);
+
+  for (let key of sessionKeys) {
+    if (verifySession(key) <= Date.now()) {
+      console.log("reviseSessionService => reviseSession : session expired for uid > ", key);
+      deleteSession(key);
+    }
   }
+  });
+  
 }
 
 function startRevisingSessionService() {
