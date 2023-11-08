@@ -83,6 +83,43 @@ exports.updateUserInDatabase = (uid, data) => {
 };
 
 
+exports.getAndUpdateUserItinerary = async (uid, itinerary) => {
+    return new Promise ((resolve, reject) => {
+        if (!itinerary) {
+            reject(new Error('Invalid data for itinerary update'));
+        }
+        // Check if uid, displayName, and dateOfBirth are defined
+        realtimeDB.ref('itineraries/' + uid).set(itinerary)
+        .then(() => {
+            console.log('manageRealtimeDatabase => getAndUpdateUserItinerary: Successfully updated itinenraty for '+ uid +' in the database');
+           resolve();
+        })
+        .catch((error) => {
+            console.log('manageRealtimeDatabase => getAndUpdateUserItinerary: Error updating itineray:', error);
+            throw error; // Throw the error to propagate it
+        });
+    });
+} 
+
+exports.getAndUpdateSession = async (uid, itinerary) => {
+    return new Promise ((resolve, reject) => {
+        if (!itinerary) {
+            reject(new Error('Invalid data for itinerary update'));
+        }
+        // Check if uid, displayName, and dateOfBirth are defined
+        realtimeDB.ref('itineraries/' + uid).update(itinerary)
+        .then(() => {
+            console.log('manageRealtimeDatabase => getAndUpdateUserItinerary: Successfully updated itinenraty for '+ uid +' in the database');
+           resolve();
+        })
+        .catch((error) => {
+            console.log('manageRealtimeDatabase => getAndUpdateUserItinerary: Error updating itineray:', error);
+            throw error; // Throw the error to propagate it
+        });
+    });
+} 
+
+
 exports.getUserFromUid = (uid) => {
     return realtimeDB.ref(`users/${uid}`).once('value')
         .then((snapshot) => {

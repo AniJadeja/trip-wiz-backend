@@ -3,9 +3,9 @@
 const OpenAI = require('openai');
 const itineraryModel = require('../models/itineraryModel.js');
 const openai = new OpenAI();
-const fs = require('fs');
-const path = require('path');
-const directoryPath = path.join(__dirname, './responses/');
+
+
+//const directoryPath = path.join(__dirname, './responses/');
 
 
 const requestPayload = {
@@ -67,7 +67,7 @@ class Iternarary {
                                 "start_date": "start date",
                                 "end_date": "end date",
                                 "description": "description of the destination",
-                                "includings:" ["list of includings"],
+                                "includings": ["list of includings"],
                                 "itinerary": [
                                                 {
                                                     "day": "Day 1",
@@ -147,17 +147,17 @@ class Iternarary {
                     // write the response to the file called response.json and itinerary.json respectively.
                     // console.log(`itenaray.js => response : ${JSON.stringify(response)}`)
 
-                    if (!fs.existsSync(directoryPath)) {
-                        fs.mkdirSync(directoryPath, { recursive: true });
-                    }
+                    // if (!fs.existsSync(directoryPath)) {
+                    //     fs.mkdirSync(directoryPath, { recursive: true });
+                    // }
 
-                    fs.writeFile(directoryPath + itinerary.uid + '.json', JSON.stringify(response), { flag: 'w' }, (err) => {
-                        if (err) {
-                            console.error('itineraryController => Error writing to the file:', err);
-                        } else {
-                            console.log('itineraryController => Response has been written to the file.');
-                        }
-                    });
+                    // fs.writeFile(directoryPath + itinerary.uid + '.json', JSON.stringify(response), { flag: 'w' }, (err) => {
+                    //     if (err) {
+                    //         console.error('itineraryController => Error writing to the file:', err);
+                    //     } else {
+                    //         console.log('itineraryController => Response has been written to the file.');
+                    //     }
+                    // });
 
                 })
                 .catch((error) => {
