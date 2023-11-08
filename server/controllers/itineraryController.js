@@ -4,9 +4,6 @@ const ItineraryModel = require('../models/itineraryModel');
 const Itinerary = require('../openAI/itinerary.js');
 const {getAndUpdateUserItinerary} = require('../firebase/manageRealtimeDatabase.js');
 
-const path = require('path');
-const directoryPath = path.join(__dirname, '../itineraries');
-
 
 exports.generateItinerary = async (req, res) => {
 
@@ -38,18 +35,6 @@ exports.generateItinerary = async (req, res) => {
           res.status(200).json({ message: 'Itinerary Generated Sucessfully', itinerary: `${itinerary}` });
           console.log('itineraryController => itinerary updated in the database');
         });
-        
-        // if (!fs.existsSync(directoryPath)) {
-        //     fs.mkdirSync(directoryPath, { recursive: true });
-        // }
-
-        // fs.writeFile(path.join(directoryPath, uid + ".json"), itinerary, { flag: 'w' }, (err) => {
-        //     if (err) {
-        //         console.error('itineraryController => Error writing to the file:', err);
-        //     } else {
-        //         console.log('itineraryController => itinerary has been written to the file.');
-        //     }
-        // });
 
 
        

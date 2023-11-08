@@ -142,22 +142,6 @@ class Iternarary {
                     resolve(JSON.stringify(returnResponse));
                     console.log(`response generated `);
                     console.log(`itenaray.js => itineraryModel.uid : ${itinerary.uid}`);
-                    //console.log(`itenaray.js => response : ${response.choices[0].text}`);
-                    //   console.log(`itenaray.js => response : ${response}`);
-                    // write the response to the file called response.json and itinerary.json respectively.
-                    // console.log(`itenaray.js => response : ${JSON.stringify(response)}`)
-
-                    // if (!fs.existsSync(directoryPath)) {
-                    //     fs.mkdirSync(directoryPath, { recursive: true });
-                    // }
-
-                    // fs.writeFile(directoryPath + itinerary.uid + '.json', JSON.stringify(response), { flag: 'w' }, (err) => {
-                    //     if (err) {
-                    //         console.error('itineraryController => Error writing to the file:', err);
-                    //     } else {
-                    //         console.log('itineraryController => Response has been written to the file.');
-                    //     }
-                    // });
 
                 })
                 .catch((error) => {
