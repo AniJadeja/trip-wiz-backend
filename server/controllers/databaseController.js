@@ -1,5 +1,5 @@
 const { updateUserInDatabase } = require('../firebase/manageRealtimeDatabase.js'); 
-const { verifySession } = require('../utils/sessionUtils.js');
+const { verifySession } = require('../session/sessionUtils.js');
 
 
 exports.updateUserData = (req, res) => {

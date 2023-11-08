@@ -20,3 +20,37 @@ class User {
     };
   }
 }
+class SignUpUser {
+  constructor(data) {
+    this.displayName = data.displayName;
+    this.dateOfBirth = data.dateOfBirth;
+    this.dateOfCreation = data.dateOfCreation;
+  }
+
+
+  getUserData() {
+    return {
+      displayName: this.displayName,
+      dateOfBirth: this.dateOfBirth,
+      dateOfCreation: this.dateOfCreation,
+    };
+  }
+}
+class TripsUser {
+  constructor(data) {
+    this.savedTrips = data.savedTrips;
+    this.savedTripsUrl = data.savedTripsUrl;
+  }
+
+
+  getUserData() {
+    return {
+      savedTrips: this.savedTrips,
+      savedTripsUrl: this.savedTripsUrl
+    };
+  }
+}
+
+exports.User = User;
+exports.SignUpUser = SignUpUser;
+exports.TripsUser = TripsUser;

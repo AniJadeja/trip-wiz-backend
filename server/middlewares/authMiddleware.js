@@ -1,63 +1,92 @@
-const e = require("express");
+const { User }  = require("../models/userModel.js");
+const { isValidDate }  = require("../utils/dateValiator.js");
 
-const { getUserFromEmail} = require("../firebase/manageRealtimeDatabase");
-const { verifySession } = require("../utils/sessionUtils");
+const { getUserFromEmail } = require("../firebase/manageRealtimeDatabase");
+const { verifySession } = require("../session/sessionUtils");
 
-exports.verifyEmail = (req, res, next) => {
-    const { username } = req.body;
-    // verify that username is meeting the email pattern cretieria
-    // on top of that email should not contain any special characters other than .
+exports.verifySignUpCreds = (req, res, next) => {
+  const { username } = req.body;
+  const { password } = req.body;
 
-    if (username != undefined) {
-        if (username.match(/^[a-zA-Z0-9.]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,4}$/)) {
-            next();
-        }
-        else {
+  let userData = new User({
+    username:username, 
+    displayName: req.body.displayName, 
+    dateOfBirth: req.body.dateOfBirth
+  });
+
+  // verify that username is meeting the email pattern cretieria
+  // on top of that email should not contain any special characters other than .
+
+  if (username !== undefined && username !== "") {
+    if (password !== undefined && password !== "") {
+      if(userData.displayName !== undefined && userData.displayName !== ""){
+
+        if(userData.dateOfBirth !== undefined && userData.dateOfBirth !== "" && isValidDate(userData.dateOfBirth,true) ){
+          if (username.match(/^[a-zA-Z0-9.]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,4}$/)) {
+             next();
+          }
+          else {
             res.status(401).json({ message: 'Invalid Username : error parsing the email > email cannot contain any special characters other than . (dot)' });
+          }
         }
+        else{
+          res.status(401).json({ message: 'Invalid Date of Birth : error parsing the date of birth > date of birth is either empty or not valid (dd/mm/yyyy)' });
+        }
+      }else{
+        res.status(401).json({ message: 'Invalid Display Name : error parsing the display name > display name cannot be empty' });
+      }
     }
+    else {
+      res.status(401).json({ message: 'Invalid Password : error parsing the password > password cannot be empty' });
+
+    }
+  } else {
+    res.status(401).json({ message: 'Invalid Username : error parsing the email > email cannot be empty' });
+  }
 }
 
 exports.verifyUsernamePassword = (req, res, next) => {
-    const { username, password } = req.body;
-    
-    getUserFromEmail(username).then((user) => { 
-    
-      if (user != undefined) {
-        console.log('authMiddleWare : user is not null');
-          if (user.password === password) {
-            console.log('authMiddleWare : password is correct');
-              next();
-          } else {
-            console.log('database password is ' + user.password + ' and input password is ' + password);
-              res.status(401).json({ message: `Incorrect Password : error verifying the user identity > incorrrect password for the username ${username}` });
-          }
+  const { username, password } = req.body;
+
+  getUserFromEmail(username).then((user) => {
+
+    if (user != undefined) {
+      console.log('authMiddleWare : user is not null');
+      if (user.password === password) {
+        console.log('authMiddleWare : password is correct');
+        next();
+      } else {
+        console.log('database password is ' + user.password + ' and input password is ' + password);
+        res.status(401).json({ message: `Incorrect Password : error verifying the user identity > incorrrect password for the username ${username}` });
+      }
     }
     else {
       res.status(401).json({ message: 'Incorrect Username : error verifying the user identity > username is not found or the username contains errornous characters' });
     }
-    
-    
-    })
 
-    
+
+  })
+
+
 
 }
 
-exports.verifySession = (req, res, next) => { 
-    const { uid } = req.body;
+exports.verifySession = (req, res, next) => {
+  const { uid } = req.body;
 
-    if (uid != undefined) {
-        if (verifySession(uid))
-        {
-          next();
-        }
-        else {
-            res.status(401).json({ message: 'Invalid Session : error parsing the session > no active session found ' });
-        } 
+  if (uid !== undefined && uid !== "") {
+    console.log('authMiddleWare : uid is not null');
+    if (verifySession(uid)) {
+      console.log('authMiddleWare : session is valid');
+      next();
+
     }
-        else {
-            res.status(400).json({ message: 'Bad Request : Try Again' });
-        }
-    
+    else {
+      res.status(401).json({ message: 'Invalid Session : active session not found ' });
+    }
+  }
+  else {
+    res.status(400).json({ message: 'Bad Request : Try Again' });
+  }
+
 }

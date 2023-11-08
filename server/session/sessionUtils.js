@@ -41,7 +41,9 @@ function deleteSession(uid) {
     }
   }
   if (sessions.hasOwnProperty(uid)) {
+    
     delete sessions[uid];
+    console.log("sessionUtils => deleteSession : session deleted with uid : ", uid)
   }
   fs.writeFileSync(sessionFilePath, JSON.stringify(sessions), 'utf8');
   console.log("sessionUtils => deleteSession : session deleted with uid : ", uid);

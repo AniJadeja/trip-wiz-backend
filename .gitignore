@@ -2,10 +2,8 @@ node_modules/
 prompt_results/
 
 server/firebase/serviceAccountKey.json
-server/utils/session.js
+server/session/session.json
 
 
-server/openAI/testCall.mjs
-server/openAI/response.txt
-server/openAI/instructModelFirst.txt
-server/openAI/GenerateIternarary.js
+server/openAI/responses/
+server/itineraries/

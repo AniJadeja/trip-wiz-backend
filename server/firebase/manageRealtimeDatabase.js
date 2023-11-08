@@ -5,8 +5,12 @@ const { realtimeDB } = require('./firebaseConfig');
 
 // Function to create a new user in the realtime database
 exports.createUserInDatabase = (uid, username, password) => {
-    // Check if uid, displayName, and dateOfBirth are defined
-    if (uid != undefined) {
+
+
+    return new Promise((resolve, reject) => {
+    
+     // Check if uid, displayName, and dateOfBirth are defined
+     if (uid != undefined) {
         if (username != undefined) {
             if (password != undefined) {
                 return realtimeDB.ref('users/' + uid).set({
@@ -19,6 +23,7 @@ exports.createUserInDatabase = (uid, username, password) => {
                         realtimeDB.ref(`emailToUid/${emailPath}`).set(uid)
                             .then(() => {
                                 console.log('manageRealtimeDatabase => createUserInDatabase : Successfully created email to UID mapping in the database');
+                                resolve(uid);
                             })
                             .catch((error) => {
                                 console.error('manageRealtimeDatabase => createUserInDatabase : Error creating email to UID mapping:', error);
@@ -33,37 +38,48 @@ exports.createUserInDatabase = (uid, username, password) => {
             }
             else {
                 console.log('manageRealtimeDatabase => createUserInDatabase : password is undefined');
-                return Promise.reject(new Error('Invalid password for user creation'));
+                reject('Invalid password for user creation');
             }
         }
         else {
             console.log('manageRealtimeDatabase => createUserInDatabase : username is undefined');
-            return Promise.reject(new Error('Invalid username for user creation'));
+            reject('Invalid username for user creation');
         }
     }
     else {
         console.log('manageRealtimeDatabase => createUserInDatabase : uid is undefined');
-        return Promise.reject(new Error('Invalid uid for user creation'));
+        reject('Invalid uid for user creation');
     }
+    
+    
+    
+    
+    });
+
+
+   
 }
 
 
 // Function to update  a new user in the realtime database
 exports.updateUserInDatabase = (uid, data) => {
-    if (!data) {
-        return Promise.reject(new Error('Invalid data for user update'));
-    }
+    
 
-    // Realtime database user update starts here
-    return realtimeDB.ref('users/' + uid).update(data)
+    return new Promise((resolve, reject) => {
+        if (!data) {
+            reject(new Error('Invalid data for user update'));
+        }
+        // Check if uid, displayName, and dateOfBirth are defined
+        realtimeDB.ref('users/' + uid).update(data)
         .then(() => {
             console.log('manageRealtimeDatabase => updateUserInDatabase: Successfully updated user in the database');
-            return;
+           resolve();
         })
         .catch((error) => {
             console.log('manageRealtimeDatabase => updateUserInDatabase: Error updating user:', error);
             throw error; // Throw the error to propagate it
         });
+    });
 };
 
 
