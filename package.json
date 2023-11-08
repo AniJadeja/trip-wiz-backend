@@ -1,7 +1,28 @@
 {
+  "name": "tripwizbackend",
+  "version": "1.0.0",
+  "description": "backend of the trip wiz app",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AniJadeja/trip-wiz-backend.git"
+  },
+  "keywords": [
+    "nodejs",
+    "firebase"
+  ],
+  "author": "Aniruddhsinh Jadeja",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/AniJadeja/trip-wiz-backend/issues"
+  },
+  "homepage": "https://github.com/AniJadeja/trip-wiz-backend#readme",
+
   "dependencies": {
-    "axios": "^1.6.0",
-    "bing-chat": "^0.2.3",
     "express": "^4.18.2",
     "firebase-admin": "^11.11.0",
     "openai": "^4.14.2"
