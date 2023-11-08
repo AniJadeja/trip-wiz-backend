@@ -1,0 +1,93 @@
+{
+    "trip_details": {
+        "id": "cmpl-8IPqY4tyudseV8Avlm54ntG0s0oB9",
+        "destination": "Hamilton",
+        "start_date": "01/06/2021",
+        "end_date": "02/06/2021",
+        "description": "Discover the charm of Hamilton, a city nestled on the banks of the mighty Waikato River in New Zealand's North Island. Known for its rich history, vibrant culture, and stunning natural beauty, Hamilton offers a diverse range of activities and experiences for travelers. Whether you're a nature lover, an adventure seeker, or a culture enthusiast, Hamilton has something for everyone. From hiking trails and botanical gardens to museums and historic sites, this city has it all. Explore the bustling city center, take a leisurely stroll along the river, or head out to the surrounding countryside to experience the best of Hamilton. Get ready for an unforgettable 2-day exploration trip in the heart of New Zealand!",
+        "includings": [
+            "Comfortable walking shoes",
+            "Sunscreen",
+            "Camera",
+            "Bottled water"
+        ],
+        "itinerary": [
+            {
+                "day": "Day 1",
+                "date": "01/06/2021",
+                "name": "Exploring Hamilton",
+                "highlights": "Discover the best of Hamilton in just one day!",
+                "places": [
+                    {
+                        "name": "Hamilton Gardens",
+                        "description": "Experience the beauty and diversity of the world's most visited garden. Explore the themed gardens, admire the stunning floral displays, and learn about the history and culture of different civilizations. From Italian Renaissance to Japanese Zen, there's something for everyone at Hamilton Gardens.",
+                        "tips": "Gardens, Nature, Culture",
+                        "crowded": "Moderately crowded",
+                        "famous_nearby": "Waikato River, Hamilton Lake",
+                        "security_level": "Safe",
+                        "id_required": "No",
+                        "danger_zone": "No"
+                    },
+                    {
+                        "name": "Waikato Museum",
+                        "description": "Discover the fascinating history and culture of Hamilton and the Waikato region at the Waikato Museum. From interactive exhibits and hands-on activities to informative displays and multimedia shows, this museum offers an immersive experience for visitors of all ages.",
+                        "tips": "Museum, History, Culture",
+                        "crowded": "Moderately crowded",
+                        "famous_nearby": "Hamilton Gardens, Waikato River",
+                        "security_level": "Safe",
+                        "id_required": "No",
+                        "danger_zone": "No"
+                    },
+                    {
+                        "name": "Hobbiton Movie Set",
+                        "description": "Step into the magical world of Middle Earth and explore the famous Hobbiton Movie Set, where scenes from the Lord of the Rings and Hobbit trilogies were filmed. Take a guided tour of the hobbit holes, the Green Dragon Inn, and other iconic locations, and immerse yourself in the stunning scenery and rich history of this beloved movie franchise.",
+                        "tips": "Movie set, Fantasy, Adventure",
+                        "crowded": "Highly crowded",
+                        "famous_nearby": "Matamata, Hamilton Gardens",
+                        "security_level": "Safe",
+                        "id_required": "No",
+                        "danger_zone": "No"
+                    }
+                ]
+            },
+            {
+                "day": "Day 2",
+                "date": "02/06/2021",
+                "name": "Adventure in the Countryside",
+                "highlights": "Experience the thrill of outdoor activities in the stunning countryside of Hamilton!",
+                "places": [
+                    {
+                        "name": "Te Waihou Walkway",
+                        "description": "Embark on a scenic walk along the crystal-clear waters of the Te Waihou River. Admire the lush greenery, the stunning waterfalls, and the diverse flora and fauna along the way. This easy 4.7 km walk is perfect for all ages and fitness levels.",
+                        "tips": "Hiking, Nature, Scenery",
+                        "crowded": "Moderately crowded",
+                        "famous_nearby": "Blue Spring, Hamilton Gardens",
+                        "security_level": "Safe",
+                        "id_required": "No",
+                        "danger_zone": "No"
+                    },
+                    {
+                        "name": "Waitomo Caves",
+                        "description": "Explore the magical world of glowworms at the Waitomo Caves. Take a boat ride through the underground caves and marvel at the thousands of tiny glowing creatures on the cave walls and ceilings. This unique experience is not to be missed!",
+                        "tips": "Caves, Glowworms, Adventure",
+                        "crowded": "Moderately crowded",
+                        "famous_nearby": "Hamilton, Matamata",
+                        "security_level": "Safe",
+                        "id_required": "No",
+                        "danger_zone": "No"
+                    },
+                    {
+                        "name": "Raglan Beach",
+                        "description": "Head out to Raglan Beach, a popular surf spot known for its world-class waves. Whether you're a seasoned surfer or a beginner, Raglan Beach offers the perfect conditions for a fun day out on the water. So grab your board and get ready to hit the waves!",
+                        "tips": "Beach, Surfing, Relaxation",
+                        "crowded": "Highly crowded",
+                        "famous_nearby": "Hamilton, Waitomo Caves",
+                        "security_level": "Safe",
+                        "id_required": "No",
+                        "danger_zone": "No"
+                    }
+                ]
+            }
+        ]
+    }
+}
