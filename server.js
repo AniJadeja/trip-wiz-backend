@@ -16,8 +16,11 @@ app.use('/authenticate', authRoutes);
 const userRoutes = require('./server/routes/users.js');
 app.use('/users', userRoutes);
 
-const tripRoutes = require('./server/routes/trip');
+const tripRoutes = require('./server/routes/trip.js');
 app.use('/trip', tripRoutes);
+
+const pingRoute = require('./server/routes/ping.js');
+app.use('/ping', pingRoute);
 
 
 
