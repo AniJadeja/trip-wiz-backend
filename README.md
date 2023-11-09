@@ -1,119 +1,20 @@
 # trip-wiz-backend
 
+==================================  xxxxxxxxxxxxxxxxxxxxx  ==================================
 
-# login
+                    The documentation is changed. Early stage documentation
+                    no  longer  works.  Please  contact  the  developer for 
+                    private API documentaion. 
 
-Api-end-point : http://localhost:3000/authenticate/login
+==================================  xxxxxxxxxxxxxxxxxxxxx  ==================================
 
-paramters-body : 
+This is node server used to serve the TripWiz project. 
 
-                 {
-                    "username": "email",
-                    "password": "password"
-                 }
+The project supports login, signup, updateUser, logout and Trip Generation APIs.
+The full documentation about the project can be found at the front end of the project.
 
-response : 
+Author does not permit anyone to clone the repo and use it. This repo is made public to provide
+a basic understanding of a node servers to new programmers. 
 
-          200 OK -> {
-                        "uid": "uid",
-                        "expiration": "expiration date",
-                        "message": "Authentication successful"
-                    }
-          401 Unauthorized -> {
-                                  "message": "Incorrect Password : error verifying the user identity > incorrrect password for the username ${username}"
-                              }
-          401 Unauthorized -> {
-                                   "message": "Incorrect Username : error verifying the user identity > username not found or the username contains errornous characters"
-                              }
-          401 Unauthorized -> {
-                                   "message": 'Authentication failed : error logging in user > useraccount has been disabled'
-                              }
-
-
-
-# signup
-
-Api-end-point : http://localhost:3000/authenticate/signup
-
-
-paramters-body : 
-
-                {
-                    "username": "email",
-                    "password": "password"
-                    "displayName" : "Firstname Lastname",
-                    "dateOfBirth" : "dd/mm/yyyy"
-                 }
-
-
-response : 
-
-          200 OK -> {
-                        "uid": "uid",
-                        "message": "Authentication successful"
-                    }
-          400 Bad Request ->  {
-                                  "message": "Authentication failed : error creating the user > ",
-                                  "error": "The email address is already in use by another account."
-                              }
-          401 Unauthorized -> {
-                                  "message": "Invalid Username : error parsing the data
-                              }
-    
-
-# logout
-
-
-Api-end-point : http://localhost:3000/authenticate/logout
-
-paramters-body : 
-
-                 {
-                    "uid": "uid",
-                 }
-
-response : 
-
-          200 OK -> {
-                        "message": "Logout success"
-                    }
-          401 Unauthorized -> {
-                                  "message": "Invalid Session : error parsing the session > no active session found "
-                              }
-          400 Unauthorized -> {
-                                   "message": "Bad Request : Try Again , error "
-                              }
-
-
-
-# trip
-
-Api-end-point : http://localhost:3000/trip
-
-paramters-body : 
-
-                 {
-                    "uid" : "uid",
-                    "destination" : "destination",
-                    "startDate" : "dd/mm/yyyy",
-                    "endDate" : "dd/mm/yyyy",
-                    "placesToVisit" : "number",
-                    "tripType" : "trip_type",
-                    "numberOfDays" : "number"
-                 }
-
-response : 
-
-          200 OK -> {
-                        "message": "trip details"
-                        // see example_trip_details.json for more information
-                    }
-          401 Unauthorized -> {
-                                  "message": "Invalid Session : error parsing the session > no active session found "
-                              }
-          400 Unauthorized -> {
-                                   "message": "Bad Request : Try Again , error "
-                              }
-          500 Unauthorized -> {
-                                   "message": "Bad Request : Internal server error , error "
-                              }
+This project is not complete and is vulnerable to many attacks which is documented privately. 
+please refrain from using the code for any kind of usage. 

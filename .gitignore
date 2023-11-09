@@ -2,6 +2,7 @@ node_modules/
 prompt_results/
 serviceAccountKey.json
 .env
+APIDOC.md
 server/firebase/serviceAccountKey.json
 server/session/session.json
 
