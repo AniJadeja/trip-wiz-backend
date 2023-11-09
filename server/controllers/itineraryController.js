@@ -1,8 +1,9 @@
 // This module is a controller for itinerary generation.
 
 const ItineraryModel = require('../models/itineraryModel');
-const Itinerary = require('../openAI/itinerary.js');
+const ItineraryCall = require('../openAI/itinerary.js');
 const {getAndUpdateUserItinerary} = require('../firebase/manageRealtimeDatabase.js');
+const {validateAndConvertToJSON} = require('../utils/jsonValidator.js');
 
 
 exports.generateItinerary = async (req, res) => {
@@ -20,23 +21,23 @@ exports.generateItinerary = async (req, res) => {
         numberOfDays: data.numberOfDays,
     });
 
-    const itinerary = new Itinerary(itineraryModel);
+    const itinerary = new ItineraryCall(itineraryModel);
     console.log('itineraryController => before generateItinerary uid: ' + itineraryModel.uid);
     itinerary.generateItinerary().then((itinerary) => {
+        let itineraryJSON = validateAndConvertToJSON(itinerary);
         const uid = itineraryModel.uid;
         console.log(`itineraryController => did call generateItinerary() sucessfully`);
-        console.log(`itineraryController => generateItnerary uid : ${uid}`);
-        //console.log(`itineraryController => itinerary: ${itinerary}`);
-
-        // Update the user's itinerary in the realtime database
-        console.log(`itineraryController => itinerary createed: ${itinerary}`);
         console.log(`itineraryController => updating itinerary in the database`);
-        getAndUpdateUserItinerary(uid, JSON.parse(itinerary)).then(() => {
-          res.status(200).json({ message: 'Itinerary Generated Sucessfully', itinerary: `${itinerary}` });
+        
+        getAndUpdateUserItinerary(uid, itineraryJSON).then(() => {
           console.log('itineraryController => itinerary updated in the database');
+          res.status(200).json({ message: 'Itinerary Generated Sucessfully', itinerary: `${JSON.stringify(itineraryJSON)}` });
+        }).catch((err) => { 
+          console.log(`itineraryController => Error updating the itinerary in the database: ${err}`);
+          res.status(500).json({ message: 'Error updating the itinerary in the database', suggestedAction: 'Please try again later or contact the administrator.' });
         });
 
-
+   
        
     })
         .catch((err) => {
@@ -45,6 +46,8 @@ exports.generateItinerary = async (req, res) => {
         }
         );
 }
+
+
 
 
 /*
