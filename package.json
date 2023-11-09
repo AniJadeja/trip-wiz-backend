@@ -21,8 +21,8 @@
     "url": "https://github.com/AniJadeja/trip-wiz-backend/issues"
   },
   "homepage": "https://github.com/AniJadeja/trip-wiz-backend#readme",
-
   "dependencies": {
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "firebase-admin": "^11.11.0"
   }

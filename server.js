@@ -1,3 +1,5 @@
+require('dotenv').config(); // Load environment variables from .env file if available
+
 const { startRevisingSessionService } = require('./server/session/reviseSessionService.js');
 
 const express = require('express');

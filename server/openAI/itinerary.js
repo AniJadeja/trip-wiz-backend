@@ -1,8 +1,8 @@
 const fetch = require('node-fetch');
 const { validateAndConvertToJSON } = require('../utils/jsonValidator.js');
 
-const OPENAI_API_KEY = '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'; // Replace with your OpenAI API key
-const API_ENDPOINT = 'https://api.openai.com/v1/completions';
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY; // Replace with your OpenAI API key
+const API_ENDPOINT = process.env.API_ENDPOINT;
 
 const ItineraryModel = require('../models/itineraryModel.js');
 
