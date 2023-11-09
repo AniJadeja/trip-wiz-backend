@@ -132,7 +132,7 @@ exports.verifySession = async (uid) => {
     return new Promise ((resolve, reject) => {
        
         // Check if uid, displayName, and dateOfBirth are defined
-        console.log("manageRealtimeDatabase => verifySession: verifying session for "+ uid);
+       
         realtimeDB.ref('activeSessions/' + uid).once('value')
         .then((snapshot) => {
             if (snapshot.exists()) {
