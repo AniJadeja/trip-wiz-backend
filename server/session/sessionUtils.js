@@ -1,110 +1,69 @@
-const fs = require('fs');
-const path = require('path');
-
-const sessionFilePath = path.join(__dirname, 'session.json');
+const {initiateSession, removeSession, verifySession} = require('../firebase/manageRealtimeDatabase');
 
 function updateSession(uid, expiration) {
-  
-  let sessions = {};
 
-  try {
-    sessions = JSON.parse(fs.readFileSync(sessionFilePath, 'utf8'));
-  } catch (error) {
-    if (error.code === 'ENOENT') {
-      // If the file does not exist, create an empty sessions object
-      sessions = {};
-      fs.writeFileSync(sessionFilePath, JSON.stringify(sessions), 'utf8');
-    } else {
-      // Handle other errors
-      console.error("Error reading session file:", error);
+  return new Promise((resolve, reject) => {
+    if (!uid) {
+      reject(new Error('Invalid uid'));
     }
+    initiateSession(uid, expiration)
+      .then(() => {
+        console.log('sessionUtils => updateSession: Successfully initiated session for ' + uid + ' in the database');
+        verifySession(uid).then((snapshot) => {
+          console.log('sessionUtils => updateSession: Session expiration is ' + snapshot.val());
+          resolve('success');
+        });
+        
+      })
+      .catch((error) => {
+        console.log('sessionUtils => updateSession: Error initiating session:', error);
+        throw error; // Throw the error to propagate it
+      });
+  });
   }
-  sessions[uid] = { expiration };
-  fs.writeFileSync(sessionFilePath, JSON.stringify(sessions), 'utf8');
-  console.log("sessionUtils => updateSession : session updated with uid : ", uid ," and expiration : " ,expiration);
-}
 
 
 function deleteSession(uid) {
-  let sessions = {};
-
-  try {
-    sessions = JSON.parse(fs.readFileSync(sessionFilePath, 'utf8'));
-  } catch (error) {
-    if (error.code === 'ENOENT') {
-      // If the file does not exist, create an empty sessions object
-      sessions = {};
-      fs.writeFileSync(sessionFilePath, JSON.stringify(sessions), 'utf8');
-    } else {
-      // Handle other errors
-      console.error("Error reading session file:", error);
-    }
-  }
-  if (sessions.hasOwnProperty(uid)) {
-    
-    delete sessions[uid];
-    console.log("sessionUtils => deleteSession : session deleted with uid : ", uid)
-  }
-  fs.writeFileSync(sessionFilePath, JSON.stringify(sessions), 'utf8');
-  console.log("sessionUtils => deleteSession : session deleted with uid : ", uid);
+     
+    return new Promise((resolve, reject) => {
+      removeSession(uid)
+        .then(() => {
+          console.log('sessionUtils => deleteSession: Successfully deleted session for ' + uid + ' in the database');
+          resolve('success');
+        })
+        .catch((error) => {
+          console.log('sessionUtils => deleteSession: Error deleting session:', error);
+          reject(error); // Throw the error to propagate it
+        });
+    });
 }
 
 function retrieveSession(uid) {
-  let sessions = {};
 
-  try {
-    sessions = JSON.parse(fs.readFileSync(sessionFilePath, 'utf8'));
-  } catch (error) {
-    // If the file is empty or does not exist, sessions will be an empty object
-  }
-  if (sessions.hasOwnProperty(uid)) {
-    //console.log("sessionUtils => retrieveSession : session retrieved with uid : ", uid);
-    //console.log("\t\t\t\t\t\t\t expiration : ", sessions[uid].expiration);
-    return sessions[uid].expiration;
-  } else {
-    return null;
-  }
-}
+  // returns the expiration of the uid session from reatime database
 
-// function to return all the keys from the session file
-
-function retrieveAllSessionKeys() {
-  let sessions = {};
-
-  try {
-    sessions = JSON.parse(fs.readFileSync(sessionFilePath, 'utf8'));
-  } catch (error) {
-    if (error.code === 'ENOENT') {
-      // If the file does not exist, create an empty sessions object
-      sessions = {};
-      fs.writeFileSync(sessionFilePath, JSON.stringify(sessions), 'utf8');
-    } else {
-      // Handle other errors
-      console.error("Error reading session file:", error);
+  return new Promise((resolve, reject) => {
+    if (!uid) {
+      reject(new Error('Invalid uid'));
     }
-  }
-  //const numberOfSessions = Object.keys(sessions).length;
- // console.log("sessionUtils => retrieveAllSessionKeys : all session keys retrieved \n\n", Object.Object.keys(sessions).length, "\n");
- //console.log("sessionUtils => retrieveAllSessionKeys : numberOfSesssions", Object.keys(sessions).length);
-  return Object.keys(sessions);
-} 
+    verifySession(uid)
+      .then((sessionExists) => {
+        if (sessionExists) {
+          resolve('success');
+        } else {
+          reject(new Error('Invalid uid'));
+        }
+      })
+      .catch((error) => {
+        console.log('sessionUtils => retrieveSession: Error retrieving session:', error);
+        throw error; // Throw the error to propagate it
+      });
+  });
 
-function verifySession(uid) {
-  let sessions = {};
-
-  try {
-    sessions = JSON.parse(fs.readFileSync(sessionFilePath, 'utf8'));
-  } catch (error) {
-    // If the file is empty or does not exist, sessions will be an empty object
-  }
-  if (sessions.hasOwnProperty(uid)) {
-    //console.log("sessionUtils => retrieveSession : session retrieved with uid : ", uid);
-    //console.log("\t\t\t\t\t\t\t expiration : ", sessions[uid].expiration);
-    return true;
-  } else {
-    return false;
-  }
+  
 }
 
 
-module.exports = { updateSession, deleteSession, retrieveSession, retrieveAllSessionKeys, verifySession };
+
+
+module.exports = { updateSession, deleteSession, retrieveSession};
