@@ -1,4 +1,4 @@
-const { updateUserInDatabase } = require('../firebase/manageRealtimeDatabase.js'); 
+const { updateUserInDatabase, getUserFromUid } = require('../firebase/manageRealtimeDatabase.js'); 
 const { retrieveSession } = require('../session/sessionUtils.js');
 
 
@@ -28,4 +28,19 @@ exports.updateUserData = (req, res) => {
           // Handle any errors that occur during user creation
           res.status(400).json({ message: 'User data update failed : error updating user data > ', error: error.message });
         }); 
+  };
+
+
+
+  exports.getUserData = (req, res) => { 
+    const { uid } = req.body;
+
+    console.log("databaseController => getUserData : uid > ", uid);
+    getUserFromUid(uid).then((user) => {
+      console.log("databaseController => getUserData : user > ", user);
+      res.status(200).json({ message: 'User data retrieved successfully. \n userData > ' + user });
+    }).catch((error) => { 
+      console.log("databaseController => getUserData : error > ", error);
+      res.status(400).json({ message: 'User data retrieval failed : error retrieving user data > ', error: error.message });
+    });
   };

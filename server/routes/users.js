@@ -12,4 +12,12 @@ router.post('/user',
     databaseController.updateUserData(req, res);
   });
 
+
+router.post('/',
+  authMiddleware.verifySession, (req, res) => {
+   // redirect auth.js to authController.js
+
+   databaseController.getUserData(req, res);
+  });
+
 module.exports = router;

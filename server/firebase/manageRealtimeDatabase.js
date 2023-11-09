@@ -169,17 +169,23 @@ exports.getAllSessionKeys = async () => {
 
 
 exports.getUserFromUid = (uid) => {
-    return realtimeDB.ref(`users/${uid}`).once('value')
-        .then((snapshot) => {
-            // The data is available in the snapshot
-            const userData = snapshot.val();
-            //console.log('User data:', userData);
-            return userData;
-        })
-        .catch((error) => {
-            console.error('manageRealtimeDatabase => updateUserInDatabase : Error reading user data:', error);
-            throw error;
-        });
+   return new Promise ((resolve, reject) => {
+    console.log('manageRealtimeDatabase => getUserFromUid : uid > ', uid);  
+    realtimeDB.ref(`users/${uid}`).on('value', (snapshot) => {
+        const userData = snapshot.val();
+        delete userData.password;
+        delete userData.uid;
+        delete userData.dateOfCreation;
+        delete userData.savedTrips;
+        delete userData.savedTripsUrl;
+        console.log('manageRealtimeDatabase => User data:', userData);
+        resolve(JSON.stringify(userData));
+      }, (errorObject) => {
+       console.error('manageRealtimeDatabase => updateUserInDatabase : Error reading user data:', error);
+        reject(errorObject.message);
+      }); 
+    });
+    
 };
 
 exports.getUserFromEmail = async (email) => {
