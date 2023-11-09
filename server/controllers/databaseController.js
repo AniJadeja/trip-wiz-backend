@@ -1,5 +1,5 @@
 const { updateUserInDatabase } = require('../firebase/manageRealtimeDatabase.js'); 
-const { verifySession } = require('../session/sessionUtils.js');
+const { retrieveSession } = require('../session/sessionUtils.js');
 
 
 exports.updateUserData = (req, res) => {
@@ -16,7 +16,7 @@ exports.updateUserData = (req, res) => {
 
     // verify session
 
-    if(!verifySession(uid)){
+    if(retrieveSession(uid) === undefined){
         res.status(401).json({ message: 'User data update failed : unauthorized' });
         return;
     }
