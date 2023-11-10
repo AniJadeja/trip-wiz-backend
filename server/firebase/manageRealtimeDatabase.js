@@ -187,6 +187,21 @@ exports.getUserFromUid = (uid) => {
         console.log('manageRealtimeDatabase => getUserFromUid : uid > ', uid);
         realtimeDB.ref(`users/${uid}`).on('value', (snapshot) => {
             const userData = snapshot.val();
+            console.log('manageRealtimeDatabase => User data:', userData);
+            resolve(JSON.stringify(userData));
+        }, (errorObject) => {
+            console.error('manageRealtimeDatabase => updateUserInDatabase : Error reading user data:', error);
+            reject(errorObject.message);
+        });
+    });
+
+};
+
+exports.getUserFromDatabase = (uid) => {
+    return new Promise((resolve, reject) => {
+        console.log('manageRealtimeDatabase => getUserFromUid : uid > ', uid);
+        realtimeDB.ref(`users/${uid}`).on('value', (snapshot) => {
+            const userData = snapshot.val();
             delete userData.password;
             delete userData.uid;
             delete userData.dateOfCreation;

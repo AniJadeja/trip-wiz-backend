@@ -1,4 +1,4 @@
-const { updateUserInDatabase, getUserFromUid,getUserItinerary } = require('../firebase/manageRealtimeDatabase.js'); 
+const { updateUserInDatabase,getUserFromDatabase,getUserItinerary } = require('../firebase/manageRealtimeDatabase.js'); 
 const { retrieveSession } = require('../session/sessionUtils.js');
 const {saveUserItineraryInCollection} = require('./firestoreController.js');
 
@@ -37,7 +37,7 @@ exports.updateUserData = (req, res) => {
     const { uid } = req.body;
 
     console.log("databaseController => getUserData : uid > ", uid);
-    getUserFromUid(uid).then((user) => {
+    getUserFromDatabase(uid).then((user) => {
       console.log("databaseController => getUserData : user > ", user);
       res.status(200).json({ message: 'User data retrieved successfully. \n userData > ' + user });
     }).catch((error) => { 
