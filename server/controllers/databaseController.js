@@ -1,5 +1,6 @@
-const { updateUserInDatabase, getUserFromUid } = require('../firebase/manageRealtimeDatabase.js'); 
+const { updateUserInDatabase, getUserFromUid,getUserItinerary } = require('../firebase/manageRealtimeDatabase.js'); 
 const { retrieveSession } = require('../session/sessionUtils.js');
+const {saveUserItineraryInCollection} = require('./firestoreController.js');
 
 
 exports.updateUserData = (req, res) => {
@@ -44,3 +45,12 @@ exports.updateUserData = (req, res) => {
       res.status(400).json({ message: 'User data retrieval failed : error retrieving user data > ', error: error.message });
     });
   };
+
+  exports.saveUserItinerary = (req, res) => {
+
+    const { uid } = req.body;
+    getUserItinerary(uid).then((itinerary) => {
+      console.log("databaseController => saveUserItinerary : itinerary > ", itinerary);
+      saveUserItineraryInCollection(uid, itinerary, res);
+    });
+  }

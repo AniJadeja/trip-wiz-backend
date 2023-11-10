@@ -48,51 +48,23 @@ exports.generateItinerary = async (req, res) => {
 }
 
 
-
-
-/*
-const apiUrl = 'http://localhost:3000/trip';
-
-// Define the data you want to send in the request body
-const requestData = {
-    "uid" : "lHVI5FakcFWCex04MWVdZPuHZ0x2",
-    "destination" : "Hamilton",
-    "startDate" : "10/10/2023",
-    "endDate" : "11/10/2023",
-    "placesToVisit" : "6",
-    "tripType" : "exploration",
-    "numberOfDays" : "2"
-};
-
-// Make a POST request with the data
-fetch(apiUrl, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json', // Set the content type to JSON
-  },
-  body: JSON.stringify(requestData), // Convert the data to a JSON string
-})
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    return response.json(); // Parse the response as JSON
-  })
-  .then(data => {
-    // Handle the response data
-    const itineraryString = data.itinerary;
-    const itinerary = JSON.parse(itineraryString);
-
-    // Log the parsed itinerary
-    console.log('Parsed Itinerary:', itinerary);
-      return itinerary;
-  })
-  .catch(error => {
-    // Handle any errors that occurred during the fetch
-    console.error('Fetch error:', error);
+function getLatestItinerary (uid) {
+  return new Promise((resolve, reject) => {
+    realtimeDB.ref('itineraries/' + uid).once('value').then((snapshot) => {
+      const itinerary = snapshot.val();
+      resolve(itinerary);
+    }).catch((err) => {
+      reject(err);
+    });
   });
+}
+
+exports.getItinerary = async (req, res) => {
 
 
+}
 
 
-*/
+exports.saveItinerary = async (req, res) => {
+  
+}
