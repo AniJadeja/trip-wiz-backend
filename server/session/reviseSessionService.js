@@ -10,11 +10,11 @@ function reviseSession() {
     try {
       sessionKeys = Object.keys(sessions);
     } catch (error) {
-      console.log("reviseSessionService => reviseSession : no running session found");
+    //  console.log("reviseSessionService => reviseSession : no running session found");
       return;
     }
 
-  console.log("reviseSessionService => reviseSession : running sessions > ", sessionKeys.length);
+  //console.log("reviseSessionService => reviseSession : running sessions > ", sessionKeys.length);
 
   for (let key of sessionKeys) {
     if (verifySession(key) <= Date.now()) {
