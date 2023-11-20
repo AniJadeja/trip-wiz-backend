@@ -1,12 +1,12 @@
 # trip-wiz-backend
 
-==================================  xxxxxxxxxxxxxxxxxxxxx  ==================================
+===================  xxxxxxxxxxxxxxxxxxxxx  ===================
 
                     The documentation is changed. Early stage documentation
                     no  longer  works.  Please  contact  the  developer for 
                     private API documentaion. 
 
-==================================  xxxxxxxxxxxxxxxxxxxxx  ==================================
+===================  xxxxxxxxxxxxxxxxxxxxx  ===================
 
 This is node server used to serve the TripWiz project. 
 
