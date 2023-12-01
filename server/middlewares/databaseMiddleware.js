@@ -16,7 +16,9 @@ exports.verifyUpdateRequest = (req, res, next) => {
     if (uid != undefined) {
         if (data != undefined) {
             if (Object.keys(data).length > 0) {
-                const validProperties = ['username', 'displayName', 'dateOfBirth', 'dateOfCreation', 'savedTrips', 'savedTripsUrl'];
+                const validProperties = ['username', 'displayName',
+                 //'dateOfBirth',
+                 'dateOfCreation', 'savedTrips', 'savedTripsUrl'];
                 const dataProperties = Object.keys(data);
                 let valid = true;
                 dataProperties.forEach((property) => {

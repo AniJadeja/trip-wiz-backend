@@ -39,7 +39,7 @@ exports.updateUserData = (req, res) => {
     console.log("databaseController => getUserData : uid > ", uid);
     getUserFromDatabase(uid).then((user) => {
       console.log("databaseController => getUserData : user > ", user);
-      res.status(200).json({ message: 'User data retrieved successfully. \n userData > ' + user });
+      res.status(200).json({ message: 'User data retrieved successfully.', user: user });
     }).catch((error) => { 
       console.log("databaseController => getUserData : error > ", error);
       res.status(400).json({ message: 'User data retrieval failed : error retrieving user data > ', error: error.message });
