@@ -18,6 +18,7 @@ function generateUserItineraryDocumentId(uid) {
     return savedItinerariesDocumentRef;
 
 }
+
 exports.saveUserItinerary = (uid, itinerary) => {
 
     const fieldName = itinerary.trip_details.id;
@@ -27,24 +28,63 @@ exports.saveUserItinerary = (uid, itinerary) => {
 
     return new Promise((resolve, reject) => {
 
-        this.getUserItineraries(uid).then((itineraries) => {
-            if (itineraries !== undefined && itineraries !== null) {
-                const existingData = itineraries || {};
-                existingData[fieldName] = fieldValue;
-                return uidDocumentRef.set(existingData);
+        // Use get() to check if the document exists
+        uidDocumentRef.get().then((doc) => {
+            if (doc.exists) {
+                // Document exists, update the existing data
+                return uidDocumentRef.set({ [fieldName]: fieldValue }, { merge: true });
+            } else {
+                // Document doesn't exist, create a new one
+                return uidDocumentRef.set({ [fieldName]: fieldValue });
             }
-             else {
-            return uidDocumentRef.set({ [fieldName]: fieldValue });}
         }).then(() => {
             resolve();
             console.log('Document successfully written!');
-        })
-        .catch((error) => {
+        }).catch((error) => {
             reject(error);
             console.error('Error writing document: ', error);
         });
-})
+    });
 };
+
+
+
+
+
+
+
+// exports.saveUserItinerary = (uid, itinerary) => {
+
+//     const fieldName = itinerary.trip_details.id;
+//     const fieldValue = itinerary;
+
+//     uidDocumentRef = generateUserItineraryDocumentId(uid);
+
+//     return new Promise((resolve, reject) => {
+
+//         this.getUserItineraries(uid).then((itineraries) => {
+//             if (itineraries !== undefined && itineraries !== null) {
+//                 const existingData = itineraries || {};
+//                 existingData[fieldName] = fieldValue;
+//                 return uidDocumentRef.set(existingData);
+//             }
+//              else {
+//             return uidDocumentRef.set({ [fieldName]: fieldValue });}
+//         }).then(() => {
+//             resolve();
+//             console.log('Document successfully written!');
+//         })
+//         .catch((error) => {
+//             reject(error);
+//             console.error('Error writing document: ', error);
+//         });
+// })
+// };
+
+
+
+
+
 
 
 exports.getUserItineraries = (uid) => {
@@ -58,9 +98,10 @@ exports.getUserItineraries = (uid) => {
                     resolve(doc.data());
                   
                 } else {
+                    trips = {"itineraries": []};
                     // doc.data() will be undefined in this case
                     console.log('mangeFirestoreDatabase => No such document!');
-                    reject('No such document!');
+                    resolve(trips)
                 }
             }).catch((error) => {
                 reject(error);
