@@ -2,7 +2,7 @@ class User {
   constructor(data) {
     this.username = data.username;
     this.displayName = data.displayName;
-    this.dateOfBirth = data.dateOfBirth;
+    //this.dateOfBirth = data.dateOfBirth;
     this.dateOfCreation = data.dateOfCreation;
     this.savedTrips = data.savedTrips;
     this.savedTripsUrl = data.savedTripsUrl;
@@ -14,7 +14,7 @@ class User {
       username: this.username,
       displayName: this.displayName,
       dateOfBirth: this.dateOfBirth,
-      dateOfCreation: this.dateOfCreation,
+      //dateOfCreation: this.dateOfCreation,
       savedTrips: this.savedTrips,
       savedTripsUrl: this.savedTripsUrl
     };
@@ -23,7 +23,7 @@ class User {
 class SignUpUser {
   constructor(data) {
     this.displayName = data.displayName;
-    this.dateOfBirth = data.dateOfBirth;
+   // this.dateOfBirth = data.dateOfBirth;
     this.dateOfCreation = data.dateOfCreation;
   }
 
@@ -31,7 +31,7 @@ class SignUpUser {
   getUserData() {
     return {
       displayName: this.displayName,
-      dateOfBirth: this.dateOfBirth,
+    //  dateOfBirth: this.dateOfBirth,
       dateOfCreation: this.dateOfCreation,
     };
   }
