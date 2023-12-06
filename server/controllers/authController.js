@@ -59,7 +59,7 @@ exports.newUser = (req, res) => {
 };
 
 exports.verify = (req, res) => {
-  res.status(200).json({ message: 'valid session : active session found' });
+  res.status(200).json({ message: 'valid session : active session found', isLoggedin: true });
 }
 exports.loginUser = (req, res) => {
 

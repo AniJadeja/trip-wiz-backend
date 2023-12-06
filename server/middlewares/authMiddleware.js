@@ -82,10 +82,10 @@ exports.verifySession = (req, res, next) => {
         console.log('authMiddleWare : session is valid');
         next();
       } else {
-        res.status(401).json({ message: 'Invalid Session : user is not logged in ' });
+        res.status(401).json({ message: 'Invalid Session : user is not logged in ', isLoggedin: false });
       }
     }).catch((error) => {
-      res.status(401).json({ message: 'Invalid Session : user is not logged in ' });
+      res.status(401).json({ message: 'Invalid Session : user is not logged in ', isLoggedin: false });
     });
 
   }
