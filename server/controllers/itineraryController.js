@@ -40,7 +40,7 @@ exports.generateItinerary = async (req, res) => {
           places: await Promise.all(
             day.places.map(async (place) => ({
               ...place,
-              photoUrl: await this.getPhotoURL(place.name, itineraryModel.destination).catch(() => ""),
+              photoUrl: await this.getPhotoURL(place.name, itineraryModel.destination),
             }))
           ),
         }))
@@ -56,6 +56,15 @@ exports.generateItinerary = async (req, res) => {
           console.log(
             "itineraryController => itinerary updated in the database"
           );
+          try{
+            console.log("itineraryController => sending response to client \n" + JSON.parse(itineraryJSON)
+            + "\n" );
+          }
+          catch(err){
+            console.log("itineraryController => Error parsing, sending response to client \n" + JSON.stringify(itineraryJSON)
+            + "\n" );
+          }
+          
           res.status(200).json({
             message: "Itinerary Generated Sucessfully",
             itinerary: `${JSON.stringify(itineraryJSON)}`,
@@ -126,6 +135,7 @@ function getPhoto(photoReference) {
               resolve(url);
           })
           .catch((err) => {
+              console.log(`placesApi => \tgetPhoto error: ${err}`);
               reject(err);
           });
   });
@@ -138,42 +148,35 @@ function getPhotoReference(name) {
       const apiUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${name}&key=AIzaSyCjlDOrP5yS4NIwDJkUFFN5CZNuweqR8PA`
 
       console.log(`placesApi => \tmaking api call to get photo reference`);
-      fetch(apiUrl)
-          .then((response) => {
-              if (!response.ok) {
-                  throw new Error(`HTTP error! Status: ${response.status}`);
-              }
-              
-          })
-          .then((data) => {
-              console.log(`placeApi => \tgot data..`);
-              const { ...rest } = data;
-              console.log(`placesApi => \tgetPhotoReference data: ${rest}`);
-        
-              const results = rest.results;
-              let photoReference = null;
 
-              for (const result of results) {
-     
-                  if (result.photos && result.photos.length > 0) {
-                      photoReference = result.photos[0].photo_reference;
-                      break; 
-                  }
+      axios.get(apiUrl).then((response) => {
+         const { data }= response;
+         
+          
+          const results = data.results;
+          let photoReference = null;
+
+          for (const result of results) {
+              if (result.photos && result.photos.length > 0) {
+                  photoReference = result.photos[0].photo_reference;
+                  break;
               }
-              resolve(photoReference);
-              return photoReference;
-          })
-          .catch((err) => {
-              reject(err);
-          });
+          }
+          resolve(photoReference);
+          return photoReference;
+      })
+      .catch((err) => {
+          console.log(`placesApi => \tgetPhotoReference error: ${err}`);
+          reject(err);
+      });
   });
 }
 
 
-exports.getPhotoURL = (place, destination) => {
+exports.getPhotoURL = async (place, destination) => {
   console.log(`placesApi => getPhotoURL getting photo for place: ${place}`);
   return new Promise((resolve, reject) => {
-      getPhotoReference(place+" "+destination)
+      getPhotoReference(place+", "+destination)
           .then((photo_reference) => {
               getPhoto(photo_reference)
                   .then((photo) => {
@@ -185,6 +188,7 @@ exports.getPhotoURL = (place, destination) => {
                   });
               return photo_reference;
           }).catch((err) => {
+            console.log(`placesApi => getPhotoURL error: ${err}`);
               reject(err);
           });
   });
