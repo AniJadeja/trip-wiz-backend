@@ -45,7 +45,7 @@ exports.getUserItinerariesInCollection = (req, res) => {
             const itinerary = response.itineraries[itineraryId];
 
             // Push the itinerary object with its id into the new array
-            if (itineraryId !== "itineraries") {
+            if (itineraryId !== "itineraries" && itineraryId !== "undefined" && itineraryId !== "null" && itineraryId !== "" && itineraryId !== null && itineraryId !== undefined && itineraryId !=" " ) {
               itinerariesArray.push({
                 trip_details: itinerary.trip_details,
                 id: itineraryId,
