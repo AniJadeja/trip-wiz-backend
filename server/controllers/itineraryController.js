@@ -6,7 +6,7 @@ const {
   getAndUpdateUserItinerary,
 } = require("../firebase/manageRealtimeDatabase.js");
 const { validateAndConvertToJSON } = require("../utils/jsonValidator.js");
-const { getPhotoURL } = require("../google/placesAPI.js");
+const { getPhotoURL } = require("../google/placesApi.js");
 
 exports.generateItinerary = async (req, res) => {
   console.log(
@@ -33,6 +33,7 @@ exports.generateItinerary = async (req, res) => {
     .then(async (itinerary) => {
       let itineraryJSON = validateAndConvertToJSON(itinerary);
 
+      console.log("Adding a phoptoUrl to each place");
       itineraryJSON.trip_details.itinerary = await Promise.all(
         itineraryJSON.trip_details.itinerary.map(async (day) => ({
           ...day,

@@ -60,6 +60,7 @@ function getPhotoReference(name) {
 
 
 exports.getPhotoURL = (place) => {
+    console.log(`placesApi => getPhotoURL getting photo for place: ${place}`);
     return new Promise((resolve, reject) => {
         getPhotoReference(place)
             .then((photo_reference) => {
