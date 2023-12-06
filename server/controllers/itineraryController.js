@@ -102,18 +102,27 @@ function getLatestItinerary(uid) {
 
 
 function getPhoto(photoReference) {
+  console.log(`placesApi => \tgetPhoto getting photo for photoReference`);
   if (!photoReference) {
       return "https://fakeimg.pl/600x400";
   }
 
   return new Promise((resolve, reject) => {
+
+    console.log(`placesApi => \tgetPhoto making api call to get photo url`);
       const url = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=AIzaSyCjlDOrP5yS4NIwDJkUFFN5CZNuweqR8PA`;
 
 
       axios.get(url)
           .then((response) => {
+              if (!response.ok) {
+                  console.log(`placesApi => \tgetPhoto error getting photo url`);
+              }
+
+              console.log(`placesApi => \tgetPhoto got data`);
               const { ...rest } = response;
               const url = rest.request.res.responseUrl;
+              console.log(`placesApi => \tgetPhoto url: ${url}`);
               resolve(url);
           })
           .catch((err) => {
@@ -123,11 +132,12 @@ function getPhoto(photoReference) {
 }
 
 function getPhotoReference(name) {
+  console.log(`placesApi => \tgetPhotoReference getting photo for place: ${name}`);
   return new Promise((resolve, reject) => {
 
       const apiUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${name}&key=AIzaSyCjlDOrP5yS4NIwDJkUFFN5CZNuweqR8PA`
 
-
+      console.log(`placesApi => \tmaking api call to get photo reference`);
       fetch(apiUrl)
           .then((response) => {
               if (!response.ok) {
@@ -136,8 +146,9 @@ function getPhotoReference(name) {
               return response.json();
           })
           .then((data) => {
+              console.log(`placeApi => \tgot data..`);
               const { ...rest } = data;
-              console.log(`placesApi => getPhotoReference data: ${rest}`);
+              console.log(`placesApi => \tgetPhotoReference data: ${rest}`);
         
               const results = rest.results;
               let photoReference = null;
