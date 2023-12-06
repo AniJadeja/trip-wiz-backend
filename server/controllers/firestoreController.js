@@ -40,6 +40,7 @@ exports.getUserItinerariesInCollection = (req, res) => {
         // Iterate through each itinerary object
         for (const itineraryId in response.itineraries) {
           if (response.itineraries.hasOwnProperty(itineraryId)) {
+            console.log("firestoreController => itineraryId > ", itineraryId + " is present"); // "0", "1", "2
             // Get the itinerary object
             const itinerary = response.itineraries[itineraryId];
 
