@@ -11,7 +11,7 @@ exports.verifySignUpCreds = (req, res, next) => {
   let userData = new User({
     username: username,
     displayName: req.body.displayName,
-    dateOfBirth: req.body.dateOfBirth
+   // dateOfBirth: req.body.dateOfBirth
   });
 
   // verify that username is meeting the email pattern cretieria
@@ -20,18 +20,18 @@ exports.verifySignUpCreds = (req, res, next) => {
   if (username !== undefined && username !== "") {
     if (password !== undefined && password !== "") {
       if (userData.displayName !== undefined && userData.displayName !== "") {
-
-        if (userData.dateOfBirth !== undefined && userData.dateOfBirth !== "" && isValidDate(userData.dateOfBirth, true)) {
-          if (username.match(/^[a-zA-Z0-9.]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,4}$/)) {
-            next();
-          }
-          else {
-            res.status(401).json({ message: 'Invalid Username : error parsing the email > email cannot contain any special characters other than . (dot)' });
-          }
-        }
-        else {
-          res.status(401).json({ message: 'Invalid Date of Birth : error parsing the date of birth > date of birth is either empty or not valid (dd/mm/yyyy)' });
-        }
+        next();
+        // if (userData.dateOfBirth !== undefined && userData.dateOfBirth !== "" && isValidDate(userData.dateOfBirth, true)) {
+        //   if (username.match(/^[a-zA-Z0-9.]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,4}$/)) {
+        //     next();
+        //   }
+        //   else {
+        //     res.status(401).json({ message: 'Invalid Username : error parsing the email > email cannot contain any special characters other than . (dot)' });
+        //   }
+        // }
+        // else {
+        //   res.status(401).json({ message: 'Invalid Date of Birth : error parsing the date of birth > date of birth is either empty or not valid (dd/mm/yyyy)' });
+        // }
       } else {
         res.status(401).json({ message: 'Invalid Display Name : error parsing the display name > display name cannot be empty' });
       }

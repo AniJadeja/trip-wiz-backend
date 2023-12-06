@@ -1,29 +1,37 @@
-require('dotenv').config(); // Load environment variables from .env file if available
+require("dotenv").config(); // Load environment variables from .env file if available
 
-const { startRevisingSessionService } = require('./server/session/reviseSessionService.js');
+const {
+  startRevisingSessionService,
+} = require("./server/session/reviseSessionService.js");
 
-const express = require('express');
+const express = require("express");
+const cors = require("cors"); // Import the cors middleware
 const app = express();
 const port = process.env.PORT || 3000; // Use the specified port or default to 3000
+
 // Middleware to parse JSON data
 app.use(express.json());
 
+// Use cors middleware to enable CORS for all routes
+app.use(cors());
+
 // Define your routes here (e.g., for authentication)
-const authRoutes = require('./server/routes/auth.js');
-app.use('/authenticate', authRoutes);
+const authRoutes = require("./server/routes/auth.js");
+app.use("/authenticate", authRoutes);
 
-// Define your routes here (e.g., for user data)32
-const userRoutes = require('./server/routes/users.js');
-app.use('/users', userRoutes);
+// Define your routes here (e.g., for user data)
+const userRoutes = require("./server/routes/users.js");
+app.use("/users", userRoutes);
 
-const tripRoutes = require('./server/routes/trip');
-app.use('/trip', tripRoutes);
+const tripRoutes = require("./server/routes/trip.js");
+app.use("/trip", tripRoutes);
 
-
+const pingRoute = require("./server/routes/ping.js");
+app.use("/ping", pingRoute);
 
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
-  console.log('starting session service');
+  console.log("starting session service");
   startRevisingSessionService();
 });

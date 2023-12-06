@@ -1,5 +1,6 @@
-const { updateUserInDatabase } = require('../firebase/manageRealtimeDatabase.js'); 
-const { verifySession } = require('../session/sessionUtils.js');
+const { updateUserInDatabase,getUserFromDatabase,getUserItinerary } = require('../firebase/manageRealtimeDatabase.js'); 
+const { retrieveSession } = require('../session/sessionUtils.js');
+const {saveUserItineraryInCollection} = require('./firestoreController.js');
 
 
 exports.updateUserData = (req, res) => {
@@ -16,7 +17,7 @@ exports.updateUserData = (req, res) => {
 
     // verify session
 
-    if(!verifySession(uid)){
+    if(retrieveSession(uid) === undefined){
         res.status(401).json({ message: 'User data update failed : unauthorized' });
         return;
     }
@@ -29,3 +30,27 @@ exports.updateUserData = (req, res) => {
           res.status(400).json({ message: 'User data update failed : error updating user data > ', error: error.message });
         }); 
   };
+
+
+
+  exports.getUserData = (req, res) => { 
+    const { uid } = req.body;
+
+    console.log("databaseController => getUserData : uid > ", uid);
+    getUserFromDatabase(uid).then((user) => {
+      console.log("databaseController => getUserData : user > ", user);
+      res.status(200).json({ message: 'User data retrieved successfully.', user: user });
+    }).catch((error) => { 
+      console.log("databaseController => getUserData : error > ", error);
+      res.status(400).json({ message: 'User data retrieval failed : error retrieving user data > ', error: error.message });
+    });
+  };
+
+  exports.saveUserItinerary = (req, res) => {
+
+    const { uid } = req.body;
+    getUserItinerary(uid).then((itinerary) => {
+      console.log("databaseController => saveUserItinerary : itinerary > ", itinerary);
+      saveUserItineraryInCollection(uid, itinerary, res);
+    });
+  }
