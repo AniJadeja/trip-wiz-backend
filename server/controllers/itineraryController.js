@@ -6,7 +6,7 @@ const {
   getAndUpdateUserItinerary,
 } = require("../firebase/manageRealtimeDatabase.js");
 const { validateAndConvertToJSON } = require("../utils/jsonValidator.js");
-const { getPhotoURL } = require("./placesAPI.js");
+const { getPhotoURL } = require("../google/placesAPI.js");
 
 exports.generateItinerary = async (req, res) => {
   console.log(
