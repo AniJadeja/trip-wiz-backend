@@ -45,10 +45,13 @@ exports.getUserItinerariesInCollection = (req, res) => {
             const itinerary = response.itineraries[itineraryId];
 
             // Push the itinerary object with its id into the new array
-            itinerariesArray.push({
-              trip_details: itinerary.trip_details,
-              id: itineraryId,
-            });
+            if (itineraryId !== "itineraries") {
+              itinerariesArray.push({
+                trip_details: itinerary.trip_details,
+                id: itineraryId,
+              });
+            }
+
           }
         }
 
