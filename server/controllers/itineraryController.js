@@ -40,7 +40,7 @@ exports.generateItinerary = async (req, res) => {
           places: await Promise.all(
             day.places.map(async (place) => ({
               ...place,
-              photoUrl: await getPhotoURL(place.name).catch(() => ""),
+              photoUrl: await this.getPhotoURL(place.name).catch(() => ""),
             }))
           ),
         }))
