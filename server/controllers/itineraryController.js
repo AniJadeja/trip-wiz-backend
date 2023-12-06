@@ -40,7 +40,7 @@ exports.generateItinerary = async (req, res) => {
           places: await Promise.all(
             day.places.map(async (place) => ({
               ...place,
-              photoUrl: await this.getPhotoURL(place.name).catch(() => ""),
+              photoUrl: await this.getPhotoURL(place.name, itineraryModel.destination).catch(() => ""),
             }))
           ),
         }))
@@ -143,7 +143,7 @@ function getPhotoReference(name) {
               if (!response.ok) {
                   throw new Error(`HTTP error! Status: ${response.status}`);
               }
-              return response.json();
+              
           })
           .then((data) => {
               console.log(`placeApi => \tgot data..`);
@@ -161,6 +161,7 @@ function getPhotoReference(name) {
                   }
               }
               resolve(photoReference);
+              return photoReference;
           })
           .catch((err) => {
               reject(err);
@@ -169,10 +170,10 @@ function getPhotoReference(name) {
 }
 
 
-exports.getPhotoURL = (place) => {
+exports.getPhotoURL = (place, destination) => {
   console.log(`placesApi => getPhotoURL getting photo for place: ${place}`);
   return new Promise((resolve, reject) => {
-      getPhotoReference(place)
+      getPhotoReference(place+" "+destination)
           .then((photo_reference) => {
               getPhoto(photo_reference)
                   .then((photo) => {
