@@ -77,25 +77,21 @@ exports.newGoogleUser = (req, res) => {
     dateOfCreation: formattedDate
   });
 
-  console.log("authController => trying to create new user using manageUsers.createUser ")
+  console.log("authController => trying to create new user using manageUsers.createGoogleUserInDatabase ")
   createGoogleUserInDatabase(uid, username).then((uid) => {
     updateUserInDatabase(uid, userData).then(() => {
-      console.log("authController => new user created using manageUsers.createUser");
+      console.log("authController => new user created using manageUsers.createGoogleUserInDatabase");
 
       manageUsers.loginUser(uid)
         .then((expiration) => {
 
-          console.log("authController => loginUser : ", expiration);
-          res.status(200).json({ uid: user.uid, expiration: expiration, message: 'Authentication successful' });
+          console.log("authController => loginGoogleUser : ", expiration);
+          res.status(200).json({ uid: uid, expiration: expiration, message: 'Google Authentication successful' });
+          return;
         })
         .catch((error) => {
           // Handle any errors that occur during user creation
-          if (error.message === "User does not have authorization.") {
-            res.status(401).json({ message: 'Authentication failed : error logging in user > useraccount has been disabled', error: error.message });
-          }
-          else {
-            res.status(400).json({ message: 'Authentication failed : error logging in user > ', error: error.message });
-          }
+            res.status(400).json({ message: 'Authentication failed : error logging in Google user > ', error: error.message });
         });
 
   }).catch((error) => {

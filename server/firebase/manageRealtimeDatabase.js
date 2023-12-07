@@ -63,6 +63,8 @@ exports.createUserInDatabase = (uid, username, password) => {
 
 
 exports.createGoogleUserInDatabase = (uid, email) => {
+    console.log('manageRealtimeDatabase => createGoogleUserInDatabase : uid > ', uid);
+    console.log('manageRealtimeDatabase => createGoogleUserInDatabase : email > ', email);
     return new Promise((resolve, reject) => {
         // Check if uid, displayName, and dateOfBirth are defined
         if (uid != undefined) {
@@ -72,31 +74,31 @@ exports.createGoogleUserInDatabase = (uid, email) => {
                         username: email
                     })
                         .then(() => {
-                            const emailPath = username.replace(/\./g, '_');
+                            const emailPath = email.replace(/\./g, '_');
                             realtimeDB.ref(`emailToUid/${emailPath}`).set(uid)
                                 .then(() => {
-                                    console.log('manageRealtimeDatabase => createUserInDatabase : Successfully created email to UID mapping in the database');
+                                    console.log('manageRealtimeDatabase => createGoogleUserInDatabase : Successfully created email to UID mapping in the database');
                                     resolve(uid);
                                 })
                                 .catch((error) => {
-                                    console.error('manageRealtimeDatabase => createUserInDatabase : Error creating email to UID mapping:', error);
+                                    console.error('manageRealtimeDatabase => createGoogleUserInDatabase : Error creating email to UID mapping:', error);
                                 });
-                            console.log('manageRealtimeDatabase => createUserInDatabase : Successfully created new user in the database');
+                            console.log('manageRealtimeDatabase => createGoogleUserInDatabase : Successfully created new user in the database');
                             // You can also set the "username" property here if needed
                         })
                         .catch((error) => {
-                            console.log('manageRealtimeDatabase => createUserInDatabase : Error creating new user:', error);
+                            console.log('manageRealtimeDatabase => createGoogleUserInDatabase : Error creating new user:', error);
                             throw error; // Throw the error to propagate it
                         });
 
             }
             else {
-                console.log('manageRealtimeDatabase => createUserInDatabase : username is undefined');
+                console.log('manageRealtimeDatabase => createGoogleUserInDatabase : username is undefined');
                 reject('Invalid username for user creation');
             }
         }
         else {
-            console.log('manageRealtimeDatabase => createUserInDatabase : uid is undefined');
+            console.log('createGoogleUserInDatabase => createUserInDatabase : uid is undefined');
             reject('Invalid uid for user creation');
         }
     });
