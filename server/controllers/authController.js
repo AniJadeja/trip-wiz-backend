@@ -1,5 +1,5 @@
 const manageUsers = require('../firebase/manageUsers.js'); // Import the manageUsers module
-const { getUserFromEmail, createUserInDatabase, updateUserInDatabase } = require("../firebase/manageRealtimeDatabase");
+const { getUserFromEmail, createUserInDatabase, updateUserInDatabase, createGoogleUserInDatabase } = require("../firebase/manageRealtimeDatabase");
 const { SignUpUser } = require("../models/userModel.js");
 
 
@@ -58,8 +58,68 @@ exports.newUser = (req, res) => {
     });
 };
 
+
+
+
+
+
+exports.newGoogleUser = (req, res) => {
+
+  const { uid, username } = req.body;
+  const today = new Date();
+  const formattedDate = formatDate(today);
+
+
+  let userData = new SignUpUser({
+    uid: uid,
+    displayName: req.body.displayName,
+    dateOfBirth: req.body.dateOfBirth,
+    dateOfCreation: formattedDate
+  });
+
+  console.log("authController => trying to create new user using manageUsers.createUser ")
+  createGoogleUserInDatabase(uid, username).then((uid) => {
+    updateUserInDatabase(uid, userData).then(() => {
+      console.log("authController => new user created using manageUsers.createUser");
+
+      manageUsers.loginUser(uid)
+        .then((expiration) => {
+
+          console.log("authController => loginUser : ", expiration);
+          res.status(200).json({ uid: user.uid, expiration: expiration, message: 'Authentication successful' });
+        })
+        .catch((error) => {
+          // Handle any errors that occur during user creation
+          if (error.message === "User does not have authorization.") {
+            res.status(401).json({ message: 'Authentication failed : error logging in user > useraccount has been disabled', error: error.message });
+          }
+          else {
+            res.status(400).json({ message: 'Authentication failed : error logging in user > ', error: error.message });
+          }
+        });
+
+  }).catch((error) => {
+    console.log("authController => error creating new user using manageUsers.createUser");
+    // Handle any errors that occur during user creation
+    res.status(400).json({ message: `Authentication failed : error creating the user > `, error: error.message });
+  });
+}).catch ((error) => {
+  console.log("authController => error creating new user using manageUsers.createUser");
+  // Handle any errors that occur during user creation
+  res.status(400).json({ message: `Authentication failed : error creating the user > `, error: error.message });
+});
+};
+
+
+
+
+
+
+
+
+
 exports.verify = (req, res) => {
-  res.status(200).json({ message: 'valid session : active session found' });
+  res.status(200).json({ message: 'valid session : active session found', isLoggedin: true });
 }
 exports.loginUser = (req, res) => {
 
