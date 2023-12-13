@@ -10,12 +10,17 @@ exports.loginUser = (uid) => {
     const expiration = 259200000; // 72 hours in milliseconds
 
     if (!this.getUser(uid).disabled) {
-      updateSession(uid, currentTimestamp + expiration);
-
-      const expirationDate = new Date(currentTimestamp+expiration);
+      updateSession(uid, currentTimestamp + expiration)
+      .then(() => {
+        console.log('ManageUsers => loginUser: update session success' + uid );
+      
+        const expirationDate = new Date(currentTimestamp+expiration);
       const formattedExpiration = expirationDate.toUTCString();
 
       resolve(formattedExpiration);
+      })
+
+      
     }
     else {
       reject("ManageUsers => loginUser : User does not have authorization.");

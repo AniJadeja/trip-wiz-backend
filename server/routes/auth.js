@@ -11,6 +11,12 @@ router.post('/signup',verifySignUpCreds, (req, res) => {
     authController.newUser(req, res);
   });
 
+  router.post('/google',authMiddleware.verifyGoogleSignUpCreds, (req, res) => {
+    // redirect auth.js to authController.js
+    console.log("auth.js => redirecting to authController.js");
+    authController.newGoogleUser(req, res);
+   });
+
 router.post('/login', verifyUsernamePassword, (req, res) => {
    // redirect auth.js to authController.js
     authController.loginUser(req, res);

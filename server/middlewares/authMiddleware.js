@@ -1,7 +1,7 @@
 const { User } = require("../models/userModel.js");
 const { isValidDate } = require("../utils/dateValiator.js");
 
-const { getUserFromEmail } = require("../firebase/manageRealtimeDatabase");
+const { getUserFromEmail,createUserInDatabase } = require("../firebase/manageRealtimeDatabase");
 const { retrieveSession } = require("../session/sessionUtils");
 
 exports.verifySignUpCreds = (req, res, next) => {
@@ -45,6 +45,42 @@ exports.verifySignUpCreds = (req, res, next) => {
   }
 }
 
+
+
+
+exports.verifyGoogleSignUpCreds = (req, res, next) => {
+  const { username } = req.body;
+  const { uid } = req.body;
+
+  let userData = new User({
+    uid : uid,
+    username: username,
+    displayName: req.body.displayName,
+   // dateOfBirth: req.body.dateOfBirth
+  });
+
+  // verify that username is meeting the email pattern cretieria
+  // on top of that email should not contain any special characters other than .
+
+  if (username !== undefined && username !== "") {
+    if (uid !== undefined && uid !== "") {
+      if (userData.displayName !== undefined && userData.displayName !== "") {
+        next();
+      } else {
+        res.status(401).json({ message: 'Invalid Display Name : error parsing the display name > display name cannot be empty' });
+      }
+    }
+    else {
+      res.status(401).json({ message: 'Invalid uid : error parsing the uid > uid cannot be empty' });
+
+    }
+  } else {
+    res.status(401).json({ message: 'Invalid Username : error parsing the email > email cannot be empty' });
+  }
+}
+
+
+
 exports.verifyUsernamePassword = (req, res, next) => {
   const { username, password } = req.body;
 
@@ -82,10 +118,10 @@ exports.verifySession = (req, res, next) => {
         console.log('authMiddleWare : session is valid');
         next();
       } else {
-        res.status(401).json({ message: 'Invalid Session : user is not logged in ', isLoggedin: false });
+        res.status(200).json({ message: 'Invalid Session : user is not logged in ', isLoggedin: false });
       }
     }).catch((error) => {
-      res.status(401).json({ message: 'Invalid Session : user is not logged in ', isLoggedin: false });
+      res.status(401).json({ message: 'Unauthorized Session : invalid uid ', isLoggedin: false });
     });
 
   }
