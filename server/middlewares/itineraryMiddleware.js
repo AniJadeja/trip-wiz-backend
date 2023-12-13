@@ -31,7 +31,7 @@ exports.verifyItenary = (req, res, next) => {
     ) {
       if (placesToVisit > 0 && numberOfDays > 0) {
         if (tripTypes.includes(tripType)) {
-          if (startDate < endDate) {
+          if (startDate < endDate || startDate == endDate) {
             if (numberOfDays < 6) {
               next();
             } else {
@@ -43,7 +43,7 @@ exports.verifyItenary = (req, res, next) => {
           } else {
             res.status(401).json({
               message:
-                "Invalid Itenrary : error parsing the itenrary > either dates are not in proper format or dates are inaccurate",
+                "Invalid Itenrary : error parsing the itenrary > startDate cannot be greater than endDate",
             });
           }
         } else {
